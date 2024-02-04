@@ -41,6 +41,22 @@ namespace NeoCortexApi.Classifiers
             return Math.Sqrt(sumOfSquares);
         }
 
+        public List<int> Predict(List<double[]> newData)
+        {
+            if (trainingData.Count == 0)
+                throw new InvalidOperationException("The classifier has not been trained yet.");
+
+            List<int> predictedLabels = new List<int>();
+
+            foreach (var dataPoint in newData)
+            {
+                int predictedLabel = PredictSingleInstance(dataPoint);
+                predictedLabels.Add(predictedLabel);
+            }
+
+            return predictedLabels;
+        }
+
     }
 }
 
