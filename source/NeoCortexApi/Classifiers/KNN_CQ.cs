@@ -10,7 +10,7 @@ namespace NeoCortexApi.Classifiers
         private List<int> labels;
         private int k;
 
-        public KNNClassifier(int k)
+        public KNN_CQ(int k)
         {
             this.k = k;
             trainingData = new List<double[]>();
@@ -24,6 +24,23 @@ namespace NeoCortexApi.Classifiers
               trainingData = data;
               labels = targetLabels;
         }
+
+        private double CalculateDistance(double[] point1, double[] point2)
+        {
+            if (point1.Length != point2.Length)
+                throw new ArgumentException("Data points must have the same number of dimensions.");
+
+            double sumOfSquares = 0.0;
+
+            for (int i = 0; i < point1.Length; i++)
+            {
+                double diff = point1[i] - point2[i];
+                sumOfSquares += diff * diff;
+            }
+
+            return Math.Sqrt(sumOfSquares);
+        }
+
     }
 }
 
