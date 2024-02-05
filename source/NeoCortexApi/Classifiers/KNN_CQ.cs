@@ -57,6 +57,36 @@ namespace NeoCortexApi.Classifiers
             return predictedLabels;
         }
 
+        // Adding a method for distance sorting
+
+        private int PredictSingleInstance(double[] newDataPoint)
+        {
+            // Calculate distances from newDataPoint to all training data points
+            List<Tuple<double, int>> distancesAndLabels = new List<Tuple<double, int>>();
+
+            for (int i = 0; i < trainingData.Count; i++)
+            {
+                double distance = CalculateDistance(newDataPoint, trainingData[i]);
+                distancesAndLabels.Add(new Tuple<double, int>(distance, labels[i]));
+            }
+
+            // Sort the distancesAndLabels list based on distances in ascending order
+            distancesAndLabels.Sort((x, y) => x.Item1.CompareTo(y.Item1));
+
+            // Take the first k elements from the sorted list
+            List<int> kNearestLabels = new List<int>();
+
+            for (int i = 0; i < k; i++)
+            {
+                kNearestLabels.Add(distancesAndLabels[i].Item2);
+            }
+
+            // Perform a majority voting to determine the predicted label
+            int predictedLabel = MajorityVoting(kNearestLabels);
+
+            return predictedLabel;
+        }
+
     }
 }
 
