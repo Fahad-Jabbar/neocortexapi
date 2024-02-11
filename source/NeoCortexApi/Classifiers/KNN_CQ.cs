@@ -87,6 +87,18 @@ namespace NeoCortexApi.Classifiers
             return predictedLabel;
         }
 
-    }
+        private int MajorityVoting(List<int> labels)
+        {
+            Dictionary<int, int> labelCount = new Dictionary<int, int>();
+
+            foreach (var label in labels)
+            {
+                if (labelCount.ContainsKey(label))
+                    labelCount[label]++;
+                else
+                    labelCount[label] = 1;
+            }
+
+        }
 }
 
