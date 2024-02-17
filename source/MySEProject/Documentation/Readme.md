@@ -5,3 +5,6 @@ Project Title :- Implementation of KNN Classifier
 - A K-Nearest Neighbors (KNN) classifier is a type of instance-based learning algorithm used for classification tasks. 
 - It classifies a data point based on the majority class of its k-nearest neighbors in the feature space. 
 - The distance metric (usually Euclidean distance) is used to measure the similarity between data points.
+
+# Class KNN_CQ.cs
+Added a new class named KNN_CQ.cs for KNN Classifier modification, the class has different methods and a brief overview of the methods is given below:
