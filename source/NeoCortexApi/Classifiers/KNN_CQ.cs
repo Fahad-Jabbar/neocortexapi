@@ -54,5 +54,13 @@ namespace NeoCortexApi.Classifiers
                                      .First()
                                      .Key;
         }
+
+        public void SetK(int k)
+        {
+            if (k <= 0)
+                throw new ArgumentException("k must be a positive integer.");
+
+            this.k = k;
+        }
     }
 }
