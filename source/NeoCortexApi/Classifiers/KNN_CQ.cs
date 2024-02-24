@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace NeoCortexApi.Classifiers
 { 
-   /// <summary>
+
   /// Represents a k-Nearest Neighbors (KNN) classifier.
-  /// </summary>
+
     public class KNN_CQ
     {
         private List<double[]> trainingData;
