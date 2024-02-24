@@ -31,6 +31,7 @@ namespace NeoCortexApi.Classifiers
             labels = targetLabels;
         }
 
+        /// Calculates the Euclidean distance between two data points.
         private double CalculateDistance(double[] point1, double[] point2)
         {
             if (point1.Length != point2.Length)
@@ -39,6 +40,7 @@ namespace NeoCortexApi.Classifiers
             return Math.Sqrt(point1.Zip(point2, (x, y) => Math.Pow(x - y, 2)).Sum());
         }
 
+        /// Predicts the labels for a list of new data points using the trained KNN classifier.
         public List<int> Predict(List<double[]> newData)
         {
             if (trainingData.Count == 0)
@@ -47,6 +49,7 @@ namespace NeoCortexApi.Classifiers
             return newData.Select(PredictSingleInstance).ToList();
         }
 
+        /// Predicts the label for a single new data point using the trained KNN classifier.
         private int PredictSingleInstance(double[] newDataPoint)
         {
             var distancesAndLabels = trainingData.Select((dataPoint, i) => new { Distance = CalculateDistance(newDataPoint, dataPoint), Label = labels[i] })
@@ -60,6 +63,7 @@ namespace NeoCortexApi.Classifiers
                                      .Key;
         }
 
+        /// Sets the value of k, the number of nearest neighbors to consider for classification.
         public void SetK(int k)
         {
             if (k <= 0)
