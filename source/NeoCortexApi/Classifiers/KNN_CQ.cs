@@ -3,20 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace NeoCortexApi.Classifiers
-{
+{ 
+   /// <summary>
+  /// Represents a k-Nearest Neighbors (KNN) classifier.
+  /// </summary>
     public class KNN_CQ
     {
         private List<double[]> trainingData;
         private List<int> labels;
         private int k;
 
+        /// Initializes a new instance of the KNN_CQ class with the specified value of k.
         public KNN_CQ(int k)
         {
             this.k = k;
             trainingData = new List<double[]>();
             labels = new List<int>();
         }
-
+        
+        /// Trains the KNN classifier with the provided training data and labels.
         public void Train(List<double[]> data, List<int> targetLabels)
         {
             if (data.Count != targetLabels.Count)
