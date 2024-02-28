@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NeoCortexApi
+using NeoCortexApi;
 using NeoCortexApi.SpatialPooler;
 
 namespace NeoCortexApi.Classifiers
-{ 
+{
 
-  /// Represents a k-Nearest Neighbors (KNN) classifier.
+    /// Represents a k-Nearest Neighbors (KNN) classifier.
 
     public class KNN_CQ
     {
@@ -22,7 +22,21 @@ namespace NeoCortexApi.Classifiers
             trainingData = new List<double[]>();
             labels = new List<int>();
         }
-        
+
+        /// Generates a random Sparse Distribution Representation (SDR) data with the specified dimensions and sparsity.
+        public static double[] GenerateRandomSdr(int dimensions, double sparsity)
+        {
+            var sdr = new double[dimensions];
+            var activeColumns = (int)(sparsity * dimensions);
+
+            for (int i = 0; i < activeColumns; i++)
+            {
+                sdr[Random.Shared.Next(dimensions)] = 1.0;
+            }
+
+            return sdr;
+        }
+
         /// Trains the KNN classifier with the provided training data and labels.
         public void Train(List<double[]> data, List<int> targetLabels)
         {
@@ -42,27 +56,28 @@ namespace NeoCortexApi.Classifiers
             return Math.Sqrt(point1.Zip(point2, (x, y) => Math.Pow(x - y, 2)).Sum());
         }
 
-        /// Predicts the labels for a list of new data points using the trained KNN classifier.
-        public List<int> Predict(List<double[]> newData)
+        /// Predicts the label for a single data point using the trained KNN classifier.
+        public int PredictSingleDataPoint(double[] dataPointToClassify)
         {
             if (trainingData.Count == 0)
                 throw new InvalidOperationException("The classifier has not been trained yet.");
 
-            return newData.Select(PredictSingleInstance).ToList();
-        }
-
-        /// Predicts the label for a single new data point using the trained KNN classifier.
-        private int PredictSingleInstance(double[] newDataPoint)
-        {
-            var distancesAndLabels = trainingData.Select((dataPoint, i) => new { Distance = CalculateDistance(newDataPoint, dataPoint), Label = labels[i] })
-                                                 .OrderBy(x => x.Distance)
-                                                 .Take(k)
-                                                 .ToList();
+            var distancesAndLabels = trainingData.Select((dataPoint, i) => new { Distance = CalculateDistance(dataPointToClassify, dataPoint), Label = labels[i] })
+                                                  .OrderBy(x => x.Distance)
+                                                  .Take(k)
+                                                  .ToList();
 
             return distancesAndLabels.GroupBy(x => x.Label)
                                      .OrderByDescending(x => x.Count())
                                      .First()
                                      .Key;
+        }
+
+        /// Predicts the label for a newly generated SDR and classifies it.
+        public int ClassifyRandomSdr(int dimensions, double sparsity)
+        {
+            var dataPointToClassify = GenerateRandomSdr(dimensions, sparsity);
+            return PredictSingleDataPoint(dataPointToClassify);
         }
 
         /// Sets the value of k, the number of nearest neighbors to consider for classification.
