@@ -4,6 +4,9 @@ using System.Linq;
 using NeoCortexApi;
 using NeoCortexApi.SpatialPooler;
 
+/* This KNN Classifier is a prototype to test it on some randomly generated SDRs. Later, we are going to implement this using Neocortex API. 
+ Once the model is predicting the desired outcome then we will feed the multisequence data to classify on new sequences.*/
+
 namespace NeoCortexApi.Classifiers
 {
 
