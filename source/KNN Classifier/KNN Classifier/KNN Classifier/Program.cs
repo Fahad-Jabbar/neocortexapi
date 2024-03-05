@@ -21,13 +21,13 @@ namespace KNN
 
         static void Analyze(double[] item, double[][] data, int k, int c)
         {
-            // 1. Compute all distances
+            // 1. Distances of the given point from all the data sets is computed below.
             int N = data.Length;
             double[] distances = new double[N];
             for (int i = 0; i < N; ++i)
                 distances[i] = DistFunc(item, data[i]);
 
-            // 2. Get ordering
+            // 2. Ordering and Sorting of the distance implemented here.
             int[] ordering = new int[N];
             for (int i = 0; i < N; ++i)
                 ordering[i] = i;
@@ -81,6 +81,8 @@ namespace KNN
             return result;
         }
 
+
+        //Euclidean Distance method is used here below.
         static double DistFunc(double[] item, double[] dataPoint)
         {
             double sum = 0.0;
@@ -93,7 +95,9 @@ namespace KNN
         }
 
         static double[][] GetData()
-        {
+        { //Summary//
+          //Two different parameters are used to define any of the three classes using KNN Classifier.
+          //The Three Classes are 1,2 and 3.
             double[][] data = new double[30][];
             data[0] = new double[] { 0, 0.32, 0.43, 0 };
             data[1] = new double[] { 1, 0.26, 0.54, 0 };
@@ -135,5 +139,5 @@ namespace KNN
               v[2].ToString("F2") + ") class = " + v[3]);
         }
 
-    } // Program
-} // ns
+    } 
+} 
