@@ -117,10 +117,10 @@ namespace NeoCortexApi.Classifiers
     /// <summary>
     /// Implementation of the KNN algorithm. 
     /// </summary>
-    public class KNeighborsClassifier<TIN, TOUT> : IClassifierKnn<TIN, TOUT>
+    public class KNeighborsClassifier<TIN, TOUT> : IClassifier<TIN, TOUT>
     {
         private int _nNeighbors = 1; // From Numenta's example 1 is default
-        private DefaultDictionary<string, List<int[]>> _sdrMap = new DefaultDictionary<string, List<int[]>>();
+        private DefaultDictionary<string, List<int[]>> _models = new DefaultDictionary<string, List<int[]>>();
         private int _sdrs = 10;
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace NeoCortexApi.Classifiers
             var similarity = new Dictionary<string, double>();
 
             // Initializing the overlaps with 0
-            foreach (var key in _sdrMap.Keys)
+            foreach (var key in _models.Keys)
                 overLaps[key] = 0;
 
             foreach (var coordinates in mapping)
@@ -248,14 +248,14 @@ namespace NeoCortexApi.Classifiers
 
             var unclassifiedSequence = unclassifiedCells.Select(idx => idx.Index).ToArray();
             var mappedElements = new DefaultDictionary<int, List<ClassificationAndDistance>>();
-            _nNeighbors = _sdrMap.Values.Count;
+            _nNeighbors = _models.Values.Count;
 
-            foreach (var sdrList in _sdrMap)
+            foreach (var model in _models)
             {
-                foreach (var (sequence, idx) in sdrList.Value.WithIndex())
+                foreach (var (sequence, idx) in model.Value.WithIndex())
                 {
                     foreach (var dict in GetDistanceTable(sequence, ref unclassifiedSequence))
-                        mappedElements[dict.Key].Add(new ClassificationAndDistance(sdrList.Key, dict.Value, idx));
+                        mappedElements[dict.Key].Add(new ClassificationAndDistance(model.Key, dict.Value, idx));
                 }
             }
 
@@ -272,20 +272,20 @@ namespace NeoCortexApi.Classifiers
         /// <param name="cells">object of type Cell.</param>
         public void Learn(TIN input, Cell[] cells)
         {
-            var label = input as string;
+            var classification = input as string;
             int[] cellIndicies = cells.Select(idx => idx.Index).ToArray();
 
-            if (!_sdrMap[label].Exists(seq => cellIndicies.SequenceEqual(seq)))
+            if (!_models[classification].Exists(seq => cellIndicies.SequenceEqual(seq)))
             {
-                if (_sdrMap[label].Count > _sdrs)
-                    _sdrMap[label].RemoveAt(0);
-                _sdrMap[label].Add(cellIndicies);
+                if (_models[classification].Count > _sdrs)
+                    _models[classification].RemoveAt(0);
+                _models[classification].Add(cellIndicies);
             }
         }
 
         /// <summary>
         /// Clears the model from all the stored sequences.
         /// </summary>
-        public void ClearState() => _sdrMap.Clear();
+        public void ClearState() => _models.Clear();
     }
 }
