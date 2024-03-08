@@ -2,38 +2,20 @@
 using System.Collections.Generic;
 using NeoCortexApi.Entities;
 using System.Linq;
-
-
+using NeoCortexApi.Classifiers;
 
 namespace NeoCortexApi.Classifiers
 {
-    
+    // Extension method for IEnumerable to get item and index
     public static class EnumExtension
     {
-        /// <summary>
-        /// For Example: List[int].foreach((item, idx) => (some operation!!!))
-        /// </summary>
-        /// <param name="self">Take in an Enumerable object</param>
-        /// <typeparam name="T">A single Generic item from the IEnumerable</typeparam>
-        /// <returns>null</returns>
         public static IEnumerable<(T item, int index)> WithIndex<T>(this IEnumerable<T> self)
             => self.Select((item, index) => (item, index));
     }
 
-    /// <summary>
-    /// Returns the default value of the declared type.
-    /// i.e var sample = DefaultDictionary[string, int]()
-    /// >>> sample['A']
-    /// >>> 0
-    /// </summary>
-    /// <typeparam name="TKey">A key of Generic type.</typeparam>
-    /// <typeparam name="TValue">A newly created value of Generic type.</typeparam>
+    // DefaultDictionary implementation
     public class DefaultDictionary<TKey, TValue> : Dictionary<TKey, TValue> where TValue : new()
     {
-        /// <summary>
-        /// Implementing the DefaultDict similar to python.
-        /// </summary>
-        /// <param name="key">A dictionary key.</param>
         public new TValue this[TKey key]
         {
             get
@@ -50,33 +32,13 @@ namespace NeoCortexApi.Classifiers
         }
     }
 
-    /// <summary>
-    /// A generic container class which is a replacement for something similar in Python pandas implemented by
-    /// nupic.org
-    /// </summary>
+    // ClassificationAndDistance class
     public class ClassificationAndDistance : IComparable<ClassificationAndDistance>
     {
-        /// <summary>
-        /// Comparison classification with respect to model data.
-        /// </summary>
         public string Classification { get; }
-
-        /// <summary>
-        /// Distance with respect to classification of a model data.
-        /// </summary>
         public int Distance { get; }
-
-        /// <summary>
-        /// Storing the SDR number under the classification. 
-        /// </summary>
         public int ClassificationNo { get; }
 
-        /// <summary>
-        /// An Constructor which initializes an object to store and handles comparison data.
-        /// </summary>
-        /// <param name="classification">Comparison classification with respect to model data.</param>
-        /// <param name="distance">Distance with respect to classification of a model data.</param>
-        /// <param name="classificationNo">Storing the SDR number under the classification.</param>
         public ClassificationAndDistance(string classification, int distance, int classificationNo)
         {
             Classification = classification;
@@ -84,85 +46,54 @@ namespace NeoCortexApi.Classifiers
             ClassificationNo = classificationNo;
         }
 
-        /// <summary>
-        /// Implementation of the Method for sorting the given generic object.
-        /// </summary>
-        /// <param name="other">Past object of the implementation for comparison.</param>
-        /// <returns>Comparison between past and present object.</returns>
         public int CompareTo(ClassificationAndDistance other) => Distance.CompareTo(other.Distance);
     }
 
-    /// <summary>
-    /// Implementation of the KNN algorithm. 
-    /// </summary>
+    // KNearestNeighborClassifier class
     public class KNeighborsClassifier<TIN, TOUT> : IClassifier<TIN, TOUT>
     {
-        private int _nNeighbors = 1; // From Numenta's example 1 is default
-        private DefaultDictionary<string, List<int[]>> _models = new DefaultDictionary<string, List<int[]>>();
+        private int _nNeighbors = 10;
+        private DefaultDictionary<string, List<List<double>>> _models = new DefaultDictionary<string, List<List<double>>>();
         private int _sdrs = 10;
 
-        /// <summary>
-        /// This method compares a single value with a sequence of values from given sequence.
-        /// </summary>
-        /// <param name="classifiedSequence">
-        /// The active indices from the classified Sequence.
-        /// </param>
-        /// <param name="unclassifiedIdx">
-        /// The active index from the unclassified Sequence.
-        /// </param>
-        /// <returns>
-        /// Returns the smallest value of type int from the list.
-        /// </returns>
-        private int LeastValue(ref int[] classifiedSequence, int unclassifiedIdx)
+        // Method to calculate the distance between two points
+        private int Distance(List<double> point1, List<double> point2)
         {
-            int shortestDistance = unclassifiedIdx;
-            foreach (var classifiedIdx in classifiedSequence)
-            {
-                var distance = Math.Abs(classifiedIdx - unclassifiedIdx);
-                if (shortestDistance > distance)
-                    shortestDistance = distance;
-            }
-
-            return shortestDistance;
+            return (int)Math.Sqrt(point1.Select((a, i) => (a - point2[i]) * (a - point2[i])).Sum());
         }
 
-        /// <summary>
-        /// This function computes the distances of the unclassified points to the distance of the classified points.
-        /// </summary>
-        /// <param name="classifiedSequence">One of the sequences received from the SDR.</param>
-        /// <param name="unclassifiedSequence">The unknown sequence to be classified.</param>
-        /// <returns>
-        /// Returns a dictionary mapping of the Unclassified sequence index to the shortest distance. Done for all
-        /// indices of the unclassified sequence.
-        /// </returns>
-        private Dictionary<int, int> GetDistanceTable(int[] classifiedSequence, ref int[] unclassifiedSequence)
+        // Method to get the least distance
+        private int LeastValue(ref List<double> classifiedSequence, double unclassifiedPoint)
+        {
+            int shortestDistance = int.MaxValue;
+            int shortestIndex = -1;
+
+            for (int i = 0; i < classifiedSequence.Count; i++)
+            {
+                int distance = Math.Abs((int)(classifiedSequence[i] - unclassifiedPoint));
+                if (distance < shortestDistance)
+                {
+                    shortestDistance = distance;
+                    shortestIndex = i;
+                }
+            }
+
+            return shortestIndex;
+        }
+
+        // Method to calculate distances
+        private Dictionary<int, int> GetDistanceTable(List<double> classifiedSequence, ref List<double> unclassifiedSequence)
         {
             var distanceTable = new Dictionary<int, int>();
 
-            foreach (var index in unclassifiedSequence)
-                distanceTable[index] = LeastValue(ref classifiedSequence, index);
+            foreach (var index in Enumerable.Range(0, unclassifiedSequence.Count))
+                distanceTable[index] = LeastValue(ref classifiedSequence, unclassifiedSequence[index]);
 
             return distanceTable;
         }
 
-        /// <summary>
-        /// This method takes a dictionary mapping of indices of the unclassified sequence to a list of
-        /// ClassificationAndDistance objects which contains the distance, classification and classification No.
-        /// </summary>
-        /// <param name="mapping">
-        /// A Mapping of unclassified sequence indices. to a list of ClassificationAndDistance objects.
-        ///     Dictionary:  {
-        ///                     2: [(ClassificationAndDistance obj 1), (ClassificationAndDistance obj 2), ...],
-        ///                     5: [(ClassificationAndDistance obj 1), (ClassificationAndDistance obj 2), ...],
-        ///                     ...
-        ///                  }
-        /// </param>
-        /// <param name="howMany">The amount of desired outputs.</param>
-        /// <returns>
-        /// Returns a list of ClassifierResult objects ranked based on the closest resemblances.
-        /// </returns>
-        private List<ClassifierResult<string>> Voting(Dictionary<int, List<ClassificationAndDistance>> mapping,
-            short howMany)
+        // Method to compute distances and classify
+        private List<ClassifierResult<string>> Voting(Dictionary<int, List<ClassificationAndDistance>> mapping, short howMany)
         {
             var votes = new DefaultDictionary<string, int>();
             var overLaps = new Dictionary<string, int>();
@@ -210,21 +141,16 @@ namespace NeoCortexApi.Classifiers
                 result.Add(cls);
             }
 
-            return result.GetRange(0, howMany).ToList();
+            return result.Count > howMany ? result.GetRange(0, howMany) : result;
         }
 
-        /// <summary>
-        /// This method is called in the pipeline when an unknown sequence needs to be classified.
-        /// </summary>
-        /// <param name="unclassifiedCells">A sequence of Cell objects.</param>
-        /// <param name="howMany">Number of desired outputs.</param>
-        /// <returns>Returns a list of ClassifierResult objects ranked based on the closest resemblances</returns>
+        // Method to classify an unclassified sequence
         public List<ClassifierResult<TIN>> GetPredictedInputValues(Cell[] unclassifiedCells, short howMany = 1)
         {
             if (unclassifiedCells.Length == 0)
                 return new List<ClassifierResult<TIN>>();
 
-            var unclassifiedSequence = unclassifiedCells.Select(idx => idx.Index).ToArray();
+            var unclassifiedSequence = unclassifiedCells.Select(x => x.Index).ToList().ConvertAll(i => (double)i); // Convert to List<double>
             var mappedElements = new DefaultDictionary<int, List<ClassificationAndDistance>>();
             _nNeighbors = _models.Values.Count;
 
@@ -243,17 +169,26 @@ namespace NeoCortexApi.Classifiers
             return Voting(mappedElements, howMany) as List<ClassifierResult<TIN>>;
         }
 
-        /// <summary>
-        /// This Function adds and removes SDRs to the model.
-        /// </summary>
-        /// <param name="input">The classification type.</param>
-        /// <param name="cells">object of type Cell.</param>
+        private Dictionary<int, int> GetDistanceTable(int[] classifiedSequence, ref List<double> unclassifiedSequence)
+        {
+            var classifiedSequenceList = classifiedSequence.Select(x => (double)x).ToList();
+            var distanceTable = new Dictionary<int, int>();
+
+            foreach (var index in Enumerable.Range(0, unclassifiedSequence.Count))
+            {
+                int indexInt = (int)index;
+                distanceTable[indexInt] = LeastValue(ref classifiedSequenceList, unclassifiedSequence[index]);
+            }
+
+            return distanceTable;
+        }
+        // Method to add new SDRs to the model
         public void Learn(TIN input, Cell[] cells)
         {
             var classification = input as string;
-            int[] cellIndicies = cells.Select(idx => idx.Index).ToArray();
+            var cellIndicies = cells.Select(x => (double)x.Index).ToList(); // Convert Index to double
 
-            if (!_models[classification].Exists(seq => cellIndicies.SequenceEqual(seq)))
+            if (!_models[classification].Exists(seq => seq.SequenceEqual(cellIndicies)))
             {
                 if (_models[classification].Count > _sdrs)
                     _models[classification].RemoveAt(0);
@@ -261,9 +196,7 @@ namespace NeoCortexApi.Classifiers
             }
         }
 
-        /// <summary>
-        /// Clears the model from all the stored sequences.
-        /// </summary>
+        // Method to clear the model
         public void ClearState() => _models.Clear();
     }
 }
