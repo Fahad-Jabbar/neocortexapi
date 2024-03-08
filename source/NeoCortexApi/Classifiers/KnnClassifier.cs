@@ -3,33 +3,11 @@ using System.Collections.Generic;
 using NeoCortexApi.Entities;
 using System.Linq;
 
-/*
-The KNN (K-Nearest-Neighbor) Classifier is designed and integrated with the Neocortex API. It takes in a
-sequence of values and preassigned labels to train the model. Once the model (a Dictionary mapping of labels to
-their sequences) is trained the user can give unclassified sequence that needs to be labeled.
 
-There are three labels A, B and C which has 6 sequnces in total each label has two sequnces we will use these sequnces to train the Classifier and then the classifier will
-predict the label value for unclassified sequence.
-
-Take a look at below example:
-_models = {
-    "A" : [[1, 3, 4, 7, 12, 13, 14], [2, 3, 5, 6, 7, 8, 12]],
-    "B" : [[0, 4, 5, 6, 9, 10, 13], [2, 3, 4, 5, 6, 7, 8]],
-    "C" : [[1, 4, 5, 6, 8, 10, 15], [1, 2, 7, 8, 13, 15, 16]]
-}
-
-unknown = [1, 3, 4, 7, 12, 14, 15]
-
-The Verdict: List = [A, B, ...] "A" being the closest match, "B" the next closest match and so on ...
-
-The Output in this case is a list of ClassifierResult objects which is sort in the order of highest match.
-*/
 
 namespace NeoCortexApi.Classifiers
 {
-    /// <summary>
-    /// Extends the foreach method to give out an item and index of type IEnumerable.
-    /// </summary>
+    
     public static class EnumExtension
     {
         /// <summary>
