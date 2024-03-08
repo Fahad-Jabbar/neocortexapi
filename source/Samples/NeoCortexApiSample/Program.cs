@@ -1,10 +1,7 @@
 ﻿using NeoCortexApi;
-using NeoCortexApi.Encoders;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using static NeoCortexApiSample.MultiSequenceLearning;
 
 namespace NeoCortexApiSample
 {
@@ -20,20 +17,15 @@ namespace NeoCortexApiSample
         {
             //
             // Starts experiment that demonstrates how to learn spatial patterns.
-            SpatialPatternLearning experiment = new SpatialPatternLearning();
-            experiment.Run();
+            // SpatialPatternLearning experiment = new SpatialPatternLearning();
+            // experiment.Run();
 
             //
             // Starts experiment that demonstrates how to learn spatial patterns.
-            //SequenceLearning experiment = new SequenceLearning();
-            //experiment.Run();
+            // SequenceLearning experiment = new SequenceLearning();
+            // experiment.Run();
 
-            //GridCellSamples gridCells = new GridCellSamples();
-            //gridCells.Run();
-
-            //RunMultiSimpleSequenceLearningExperiment();
-
-
+            // RunMultiSimpleSequenceLearningExperiment();
             RunMultiSequenceLearningExperiment();
         }
 
@@ -41,8 +33,8 @@ namespace NeoCortexApiSample
         {
             Dictionary<string, List<double>> sequences = new Dictionary<string, List<double>>();
 
-            sequences.Add("S1", new List<double>(new double[] { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, }));
-            sequences.Add("S2", new List<double>(new double[] { 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0 }));
+            /* sequences.Add("S1", new List<double>(new double[] { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, }));
+             sequences.Add("S2", new List<double>(new double[] { 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0 }));*/
 
             //
             // Prototype for building the prediction engine.
@@ -61,11 +53,18 @@ namespace NeoCortexApiSample
         {
             Dictionary<string, List<double>> sequences = new Dictionary<string, List<double>>();
 
-            //sequences.Add("S1", new List<double>(new double[] { 0.0, 1.0, 0.0, 2.0, 3.0, 4.0, 5.0, 6.0, 5.0, 4.0, 3.0, 7.0, 1.0, 9.0, 12.0, 11.0, 12.0, 13.0, 14.0, 11.0, 12.0, 14.0, 5.0, 7.0, 6.0, 9.0, 3.0, 4.0, 3.0, 4.0, 3.0, 4.0 }));
-            //sequences.Add("S2", new List<double>(new double[] { 0.8, 2.0, 0.0, 3.0, 3.0, 4.0, 5.0, 6.0, 5.0, 7.0, 2.0, 7.0, 1.0, 9.0, 11.0, 11.0, 10.0, 13.0, 14.0, 11.0, 7.0, 6.0, 5.0, 7.0, 6.0, 5.0, 3.0, 2.0, 3.0, 4.0, 3.0, 4.0 }));
+            sequences.Add("S1", new List<double>(new double[] { 0.0, 1.0, 2.0, 2.5, 4.0, 2.8, 5.0 }));
+            sequences.Add("S2", new List<double>(new double[] { 8.0, 1.0, 2.0, 9.4, 10.0, 7.0, 11.0 }));
+            sequences.Add("S3", new List<double>(new double[] { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0 }));
+            sequences.Add("S4", new List<double>(new double[] { 7.0, 7.2, 7.4, 7.6, 7.8, 8.0, 8.2, 8.4 }));
+            //sequences.Add("S5", new List<double>(new double[] { 7.0, 7.2, 7.4, 7.6, 7.8, 8.0, 8.2, 8.4 }));
+            sequences.Add("S6", new List<double>(new double[] { 10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0 }));
+            sequences.Add("S7", new List<double>(new double[] { 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0 }));
+            //sequences.Add("S8", new List<double>(new double[] { 24.0, 25.0, 26.0, 27.0, 28.0, 29.0, 30.0 }));
+            //sequences.Add("S9", new List<double>(new double[] { 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 }));
 
-            sequences.Add("S1", new List<double>(new double[] { 0.0, 1.0, 2.0, 3.0, 4.0, 2.0, 5.0, }));
-            sequences.Add("S2", new List<double>(new double[] { 8.0, 1.0, 2.0, 9.0, 10.0, 7.0, 11.00 }));
+            // sequences.Add("S1", new List<double>(new double[] { 0.0, 1.0, 2.0, 2.5 , 4.0, 2.8, 5.0, }));
+            //sequences.Add("S2", new List<double>(new double[] { 8.0, 1.0, 2.0, 9.4, 10.0, 7.0, 11.00 }));
 
             //
             // Prototype for building the prediction engine.
@@ -76,9 +75,9 @@ namespace NeoCortexApiSample
             // These list are used to see how the prediction works.
             // Predictor is traversing the list element by element. 
             // By providing more elements to the prediction, the predictor delivers more precise result.
-            var list1 = new double[] { 1.0, 2.0, 3.0, 4.0, 2.0, 5.0 };
-            var list2 = new double[] { 2.0, 3.0, 4.0 };
-            var list3 = new double[] { 8.0, 1.0, 2.0 };
+            var list1 = new double[] { 8.0, 1.0, 2.0 };
+            var list2 = new double[] { 7.0, 7.2, 7.4 };
+            /*var list3 = new double[] { 4.0, 5.0, 6.0 };*/
 
             predictor.Reset();
             PredictNextElement(predictor, list1);
@@ -86,8 +85,8 @@ namespace NeoCortexApiSample
             predictor.Reset();
             PredictNextElement(predictor, list2);
 
-            predictor.Reset();
-            PredictNextElement(predictor, list3);
+            /*predictor.Reset();
+            PredictNextElement(predictor, list3);*/
         }
 
         private static void PredictNextElement(Predictor predictor, double[] list)
@@ -117,3 +116,4 @@ namespace NeoCortexApiSample
         }
     }
 }
+
