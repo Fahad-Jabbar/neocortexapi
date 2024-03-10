@@ -1,7 +1,7 @@
 ﻿using System;
 namespace KNN
 {
-    class KNNProgram
+    public class KNNProgram
     {
         static void Main(string[] args)
         {
@@ -19,7 +19,7 @@ namespace KNN
             Console.ReadLine();
         }
 
-        static void Analyze(double[] item, double[][] data, int k, int c)
+        public static int Analyze(double[] item, double[][] data, int k, int c)
         {
             // 1. Distances of the given point from all the data sets is computed below.
             int N = data.Length;
@@ -61,9 +61,23 @@ namespace KNN
                 int predClass = (int)data[idx][3];
                 votes[predClass] += wts[i] * 1.0;
             }
+
+            /////////////////////
+            // Find the class with the maximum votes
+            int maxVotesIndex = 0;
+            for (int i = 1; i < c; ++i)
+            {
+                if (votes[i] > votes[maxVotesIndex])
+                    maxVotesIndex = i;
+            }
+
             for (int i = 0; i < c; ++i)
                 Console.WriteLine("[" + i + "]  " +
                 votes[i].ToString("F4"));
+
+            return maxVotesIndex; //
+                                  // Return the predicted class
+
         } // Analyze
 
         static double[] MakeWeights(int k, double[] distances)
@@ -94,7 +108,7 @@ namespace KNN
             return Math.Sqrt(sum);
         }
 
-        static double[][] GetData()
+        public static double[][] GetData()
         { //Summary//
           //Two different parameters are used to define any of the three classes using KNN Classifier.
           //The Three Classes are 1,2 and 3.
@@ -139,5 +153,5 @@ namespace KNN
               v[2].ToString("F2") + ") class = " + v[3]);
         }
 
-    } 
-} 
+    }
+}
