@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NeoCortexApi;
-using NeoCortexApi.SpatialPooler;
+//using NeoCortexApi.SpatialPooler;
 
 /* This KNN Classifier is a prototype to test it on some randomly generated SDRs. Later, we are going to implement this using Neocortex API. 
  Once the model is predicting the desired outcome then we will feed the multisequence data to classify on new sequences.*/
@@ -14,11 +14,17 @@ namespace NeoCortexApi.Classifiers
 
     public class KNN_CQ
     {
+
+        static void Main(string[] args)
+        { }
         private List<double[]> trainingData;
         private List<int> labels;
         private int k;
 
-        /// Initializes a new instance of the KNN_CQ class with the specified value of k.
+
+        // Static instance of Random class
+        private static Random random = new Random();
+
         public KNN_CQ(int k)
         {
             this.k = k;
@@ -26,7 +32,6 @@ namespace NeoCortexApi.Classifiers
             labels = new List<int>();
         }
 
-        /// Generates a random Sparse Distribution Representation (SDR) data with the specified dimensions and sparsity.
         public static double[] GenerateRandomSdr(int dimensions, double sparsity)
         {
             var sdr = new double[dimensions];
@@ -34,7 +39,7 @@ namespace NeoCortexApi.Classifiers
 
             for (int i = 0; i < activeColumns; i++)
             {
-                sdr[Random.Shared.Next(dimensions)] = 1.0;
+                sdr[random.Next(dimensions)] = 1.0;
             }
 
             return sdr;

@@ -1,7 +1,10 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeoCortexApi", "NeoCortexApi.csproj", "{001117F4-37CD-40FE-A6D9-42F1075F05DC}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34316.72
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeoCortexApi", "NeoCortexApi.csproj", "{001117F4-37CD-40FE-A6D9-42F1075F05DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KNN_Q_ConsoleApp", "..\KNN_Q_ConsoleApp\KNN_Q_ConsoleApp.csproj", "{E9E0A319-7779-487A-856A-EAA70999081F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,5 +16,12 @@ Global
 		{001117F4-37CD-40FE-A6D9-42F1075F05DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{001117F4-37CD-40FE-A6D9-42F1075F05DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{001117F4-37CD-40FE-A6D9-42F1075F05DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9E0A319-7779-487A-856A-EAA70999081F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9E0A319-7779-487A-856A-EAA70999081F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9E0A319-7779-487A-856A-EAA70999081F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9E0A319-7779-487A-856A-EAA70999081F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

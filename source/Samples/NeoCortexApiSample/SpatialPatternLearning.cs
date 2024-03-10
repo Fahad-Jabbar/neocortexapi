@@ -29,7 +29,7 @@ namespace NeoCortexApiSample
             int inputBits = 200;
 
             // We will build a slice of the cortex with the given number of mini-columns
-            int numColumns = 1024;
+            int numColumns = 2048;
 
             //
             // This is a set of configuration parameters used in the experiment.
@@ -45,10 +45,10 @@ namespace NeoCortexApiSample
                 PotentialRadius = (int)(0.15 * inputBits),
                 LocalAreaDensity = -1,
                 ActivationThreshold = 10,
-                
+
                 MaxSynapsesPerSegment = (int)(0.01 * numColumns),
                 Random = new ThreadSafeRandom(42),
-                StimulusThreshold=10,
+                StimulusThreshold = 10,
             };
 
             double max = 100;
@@ -79,12 +79,8 @@ namespace NeoCortexApiSample
                 inputValues.Add((double)i);
             }
 
-            var sp = RunExperiment(cfg, encoder, inputValues);
-
-            RunRustructuringExperiment(sp, encoder, inputValues);
+            RunExperiment(cfg, encoder, inputValues);
         }
-
-       
 
         /// <summary>
         /// Implements the experiment.
@@ -92,8 +88,7 @@ namespace NeoCortexApiSample
         /// <param name="cfg"></param>
         /// <param name="encoder"></param>
         /// <param name="inputValues"></param>
-        /// <returns>The trained bersion of the SP.</returns>
-        private static SpatialPooler RunExperiment(HtmConfig cfg, EncoderBase encoder, List<double> inputValues)
+        private static void RunExperiment(HtmConfig cfg, EncoderBase encoder, List<double> inputValues)
         {
             // Creates the htm memory.
             var mem = new Connections(cfg);
@@ -128,7 +123,6 @@ namespace NeoCortexApiSample
 
             // It creates the instance of Spatial Pooler Multithreaded version.
             SpatialPooler sp = new SpatialPooler(hpa);
-            //sp = new SpatialPoolerMT(hpa);
 
             // Initializes the 
             sp.Init(mem, new DistributedMemory() { ColumnDictionary = new InMemoryDistributedDictionary<int, NeoCortexApi.Entities.Column>(1) });
@@ -167,8 +161,6 @@ namespace NeoCortexApiSample
             // Learning process will take 1000 iterations (cycles)
             int maxSPLearningCycles = 1000;
 
-            int numStableCycles = 0;
-
             for (int cycle = 0; cycle < maxSPLearningCycles; cycle++)
             {
                 Debug.WriteLine($"Cycle  ** {cycle} ** Stability: {isInStableState}");
@@ -196,32 +188,6 @@ namespace NeoCortexApiSample
                     prevActiveCols[input] = activeColumns;
                     prevSimilarity[input] = similarity;
                 }
-
-                if (isInStableState)
-                {
-                    numStableCycles++;
-                }
-
-                if (numStableCycles > 5)
-                    break;
-            }
-
-            return sp;
-        }
-
-        private void RunRustructuringExperiment(SpatialPooler sp, EncoderBase encoder, List<double> inputValues)
-        {
-            foreach (var input in inputValues)
-            {
-                var inpSdr = encoder.Encode(input);
-
-                var actCols = sp.Compute(inpSdr, false);
-
-                var probabilities = sp.Reconstruct(actCols);
-
-                Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
-
-                Debug.WriteLine($"Input: {input} SDR: {Helpers.StringifyVector(actCols)}");
             }
         }
     }

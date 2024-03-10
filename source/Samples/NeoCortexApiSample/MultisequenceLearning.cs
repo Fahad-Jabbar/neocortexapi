@@ -1,13 +1,12 @@
-﻿using NeoCortexApi;
-using NeoCortexApi.Classifiers;
+﻿using NeoCortexApi; // imports entire namespace, give access to all of its classes
+using NeoCortexApi.Classifiers; // imports classifiers in NeoCortexApi
 using NeoCortexApi.Encoders;
 using NeoCortexApi.Entities;
 using NeoCortexApi.Network;
-using Org.BouncyCastle.Asn1.Tsp;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+using System; // general-purpose 
+using System.Collections.Generic; // for collections like List<T> and Dictionaries<Tkeys, TValues
+using System.Diagnostics; // monitoring and debugging like Stopwatch class
+using System.Linq; // for working with sequences like IEnumerable<T> through methods like Select and Where
 
 
 namespace NeoCortexApiSample
@@ -25,37 +24,41 @@ namespace NeoCortexApiSample
         {
             Console.WriteLine($"Hello NeocortexApi! Experiment {nameof(MultiSequenceLearning)}");
 
-            int inputBits = 100;
-            int numColumns = 1024;
+            int inputBits = 200; // no of bits to represent each element in the sequence
+            int numColumns = 2048; // no of columns in HTM network, to learn and process the sequence
 
             HtmConfig cfg = new HtmConfig(new int[] { inputBits }, new int[] { numColumns })
             {
-                Random = new ThreadSafeRandom(42),
+                Random = new ThreadSafeRandom(42), // seed of 42 for consistent random no generation across program runs
 
-                CellsPerColumn = 25,
+                CellsPerColumn = 25, // enables global inhibition, default 25
                 GlobalInhibition = true,
                 LocalAreaDensity = -1,
-                NumActiveColumnsPerInhArea = 0.02 * numColumns,
-                PotentialRadius = (int)(0.15 * inputBits),
-                //InhibitionRadius = 15,
+                NumActiveColumnsPerInhArea = 0.02 * numColumns, // no of active columns per inhibition 2% of total columns
+                PotentialRadius = (int)(0.15 * inputBits), // radius of connection in columns
+                //InhibitionRadius = 15, // smaller the radius, greater the local competition
 
-                MaxBoost = 10.0,
-                DutyCyclePeriod = 25,
-                MinPctOverlapDutyCycles = 0.75,
-                MaxSynapsesPerSegment = (int)(0.02 * numColumns),
+                MaxBoost = 10.0,  // for learning, set how much connection performance can be incresed
+                DutyCyclePeriod = 100, // controls timing of learning updates
+                MinPctOverlapDutyCycles = 0.75, // minimum overlap to trigger learning updates
+                MaxSynapsesPerSegment = (int)(0.02 * numColumns), // influence no of connections each column can form
 
-                ActivationThreshold = 15,
-                ConnectedPermanence = 0.5,
+                ActivationThreshold = 15, // for columns to participate in learning
+                ConnectedPermanence = 0.5, // initial permanance value for newly formed connection
 
                 // Learning is slower than forgetting in this case.
                 PermanenceDecrement = 0.25,
                 PermanenceIncrement = 0.15,
 
                 // Used by punishing of segments.
-                PredictedSegmentDecrement = 0.1
+                PredictedSegmentDecrement = 0.1 // punishment factor for incorrect prediction
             };
 
-            double max = 20;
+            /* until now.... configurations to determine the learning behaviour of the HTM network, learn sequnces
+            incrementally and focus on recent info. Stronger activations are required for learning, forgeting happens faster
+            --- change these configurations to play with performance of sequence learning task*/
+
+            double max = 95; // maximum value expected in 
 
             Dictionary<string, object> settings = new Dictionary<string, object>()
             {
@@ -84,11 +87,13 @@ namespace NeoCortexApiSample
 
             int maxMatchCnt = 0;
 
+
             var mem = new Connections(cfg);
 
             bool isInStableState = false;
 
-            HtmClassifier<string, ComputeCycle> cls = new HtmClassifier<string, ComputeCycle>();
+            // HtmClassifier<string, ComputeCycle> cls = new HtmClassifier<string, ComputeCycle>();
+            var cls = new KNeighborsClassifier<string, ComputeCycle>();
 
             var numUniqueInputs = GetNumberOfInputs(sequences);
 
@@ -101,10 +106,11 @@ namespace NeoCortexApiSample
             {
                 if (isStable)
                     // Event should be fired when entering the stable state.
-                    Debug.WriteLine($"STABLE: Patterns: {numPatterns}, Inputs: {seenInputs}, iteration: {seenInputs / numPatterns}");
+                    Console.WriteLine($"STABLE: Patterns: {numPatterns}, Inputs: {seenInputs}, iteration: {seenInputs / numPatterns}");
+
                 else
                     // Ideal SP should never enter unstable state after stable state.
-                    Debug.WriteLine($"INSTABLE: Patterns: {numPatterns}, Inputs: {seenInputs}, iteration: {seenInputs / numPatterns}");
+                    Console.WriteLine($"INSTABLE: Patterns: {numPatterns}, Inputs: {seenInputs}, iteration: {seenInputs / numPatterns}");
 
                 // We are not learning in instable state.
                 isInStableState = isStable;
@@ -128,13 +134,13 @@ namespace NeoCortexApiSample
 
             //double[] inputs = inputValues.ToArray();
             int[] prevActiveCols = new int[0];
-            
+
             int cycle = 0;
             int matches = 0;
 
-            var lastPredictedValues = new List<string>(new string[] { "0"});
-            
-            int maxCycles = 3500;
+            var lastPredictedValues = new List<string>(new string[] { "0" });
+
+            int maxCycles = 236;
 
             //
             // Training SP to get stable. New-born stage.
@@ -146,14 +152,14 @@ namespace NeoCortexApiSample
 
                 cycle++;
 
-                Debug.WriteLine($"-------------- Newborn Cycle {cycle} ---------------");
+                Console.WriteLine($"-------------- Newborn Cycle {cycle} ---------------");
 
                 foreach (var inputs in sequences)
                 {
                     foreach (var input in inputs.Value)
                     {
-                        Debug.WriteLine($" -- {inputs.Key} - {input} --");
-                    
+                        Console.WriteLine($" -- {inputs.Key} - {input} --");
+
                         var lyrOut = layer1.Compute(input, true);
 
                         if (isInStableState)
@@ -175,7 +181,7 @@ namespace NeoCortexApiSample
             // Loop over all sequences.
             foreach (var sequenceKeyPair in sequences)
             {
-                Debug.WriteLine($"-------------- Sequences {sequenceKeyPair.Key} ---------------");
+                Console.WriteLine($"-------------- Sequences {sequenceKeyPair.Key} ---------------");
 
                 int maxPrevInputs = sequenceKeyPair.Value.Count - 1;
 
@@ -194,14 +200,14 @@ namespace NeoCortexApiSample
 
                     cycle++;
 
-                    Debug.WriteLine("");
+                    Console.WriteLine("");
 
-                    Debug.WriteLine($"-------------- Cycle {cycle} ---------------");
-                    Debug.WriteLine("");
+                    Console.WriteLine($"-------------- Cycle {cycle} ---------------");
+                    Console.WriteLine("");
 
                     foreach (var input in sequenceKeyPair.Value)
                     {
-                        Debug.WriteLine($"-------------- {input} ---------------");
+                        Console.WriteLine($"-------------- {input} ---------------");
 
                         var lyrOut = layer1.Compute(input, true) as ComputeCycle;
 
@@ -234,8 +240,8 @@ namespace NeoCortexApiSample
 
                         cls.Learn(key, actCells.ToArray());
 
-                        Debug.WriteLine($"Col  SDR: {Helpers.StringifyVector(lyrOut.ActivColumnIndicies)}");
-                        Debug.WriteLine($"Cell SDR: {Helpers.StringifyVector(actCells.Select(c => c.Index).ToArray())}");
+                        Console.WriteLine($"Col  SDR: {Helpers.StringifyVector(lyrOut.ActivColumnIndicies)}");
+                        Console.WriteLine($"Cell SDR: {Helpers.StringifyVector(actCells.Select(c => c.Index).ToArray())}");
 
                         //
                         // If the list of predicted values from the previous step contains the currently presenting value,
@@ -243,10 +249,10 @@ namespace NeoCortexApiSample
                         if (lastPredictedValues.Contains(key))
                         {
                             matches++;
-                            Debug.WriteLine($"Match. Actual value: {key} - Predicted value: {lastPredictedValues.FirstOrDefault(key)}.");
+                            Console.WriteLine($"Match. Actual value: {key} - Predicted value: {lastPredictedValues.FirstOrDefault(key)}.");
                         }
                         else
-                            Debug.WriteLine($"Missmatch! Actual value: {key} - Predicted values: {String.Join(',', lastPredictedValues)}");
+                            Console.WriteLine($"Missmatch! Actual value: {key} - Predicted values: {String.Join(',', lastPredictedValues)}");
 
                         if (lyrOut.PredictiveCells.Count > 0)
                         {
@@ -255,15 +261,15 @@ namespace NeoCortexApiSample
 
                             foreach (var item in predictedInputValues)
                             {
-                                Debug.WriteLine($"Current Input: {input} \t| Predicted Input: {item.PredictedInput} - {item.Similarity}");
+                                Console.WriteLine($"Current Input: {input} \t| Predicted Input: {item.PredictedInput} - {item.Similarity}");
                             }
 
-                            lastPredictedValues = predictedInputValues.Select(v=>v.PredictedInput).ToList();
+                            lastPredictedValues = predictedInputValues.Select(v => v.PredictedInput).ToList();
                         }
                         else
                         {
-                            Debug.WriteLine($"NO CELLS PREDICTED for next cycle.");
-                            lastPredictedValues = new List<string> ();
+                            Console.WriteLine($"NO CELLS PREDICTED for next cycle.");
+                            lastPredictedValues = new List<string>();
                         }
                     }
 
@@ -272,26 +278,26 @@ namespace NeoCortexApiSample
 
                     double accuracy = (double)matches / (double)sequenceKeyPair.Value.Count * 100.0;
 
-                    Debug.WriteLine($"Cycle: {cycle}\tMatches={matches} of {sequenceKeyPair.Value.Count}\t {accuracy}%");
+                    Console.WriteLine($"Cycle: {cycle}\tMatches={matches} of {sequenceKeyPair.Value.Count}\t {accuracy}%");
 
                     if (accuracy >= maxPossibleAccuraccy)
                     {
                         maxMatchCnt++;
-                        Debug.WriteLine($"100% accuracy reched {maxMatchCnt} times.");
+                        Console.WriteLine($"100% accuracy reched {maxMatchCnt} times.");
 
                         //
                         // Experiment is completed if we are 30 cycles long at the 100% accuracy.
                         if (maxMatchCnt >= 30)
                         {
                             sw.Stop();
-                            Debug.WriteLine($"Sequence learned. The algorithm is in the stable state after 30 repeats with with accuracy {accuracy} of maximum possible {maxMatchCnt}. Elapsed sequence {sequenceKeyPair.Key} learning time: {sw.Elapsed}.");
+                            Console.WriteLine($"Sequence learned. The algorithm is in the stable state after 30 repeats with with accuracy {accuracy} of maximum possible {maxMatchCnt}. Elapsed sequence {sequenceKeyPair.Key} learning time: {sw.Elapsed}.");
                             isLearningCompleted = true;
                             break;
                         }
                     }
                     else if (maxMatchCnt > 0)
                     {
-                        Debug.WriteLine($"At 100% accuracy after {maxMatchCnt} repeats we get a drop of accuracy with accuracy {accuracy}. This indicates instable state. Learning will be continued.");
+                        Console.WriteLine($"At 100% accuracy after {maxMatchCnt} repeats we get a drop of accuracy with accuracy {accuracy}. This indicates instable state. Learning will be continued.");
                         maxMatchCnt = 0;
                     }
 
@@ -303,12 +309,12 @@ namespace NeoCortexApiSample
                     throw new Exception($"The system didn't learn with expected acurracy!");
             }
 
-            Debug.WriteLine("------------ END ------------");
-           
+            Console.WriteLine("------------ END ------------");
+
             return new Predictor(layer1, mem, cls);
         }
 
-      
+
         /// <summary>
         /// Gets the number of all unique inputs.
         /// </summary>
@@ -349,7 +355,7 @@ namespace NeoCortexApiSample
                 key += (prevInputs[i]);
             }
 
-            return $"{sequence}_{key}";
+            return $"{sequence}_{key}_{input}";
         }
     }
 }
