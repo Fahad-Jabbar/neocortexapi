@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace KNN
 {
     public class KNNProgram
@@ -14,7 +15,17 @@ namespace KNN
             double[][] data = GetData();
             double[] item = new double[] { 0.38, 0.42 };
             Console.WriteLine("\nNearest (k=6) to (0.38, 0.42):");
-            Analyze(item, data, 6, 3);  // 3 classes
+
+            // Print the input
+            Console.WriteLine($"Input: {item[0]}, {item[1]}");
+
+            // Analyze the input
+            int predictedClass = Analyze(item, data, 6, 3);  // 3 classes
+
+            // Print the predicted output class
+       
+            Console.WriteLine($"Predicted Output Class: {predictedClass}");
+
             Console.WriteLine("\nEnding k-NN");
             Console.ReadLine();
         }
@@ -152,6 +163,5 @@ namespace KNN
               "  (" + v[1].ToString("F2") + " " +
               v[2].ToString("F2") + ") class = " + v[3]);
         }
-
     }
 }
