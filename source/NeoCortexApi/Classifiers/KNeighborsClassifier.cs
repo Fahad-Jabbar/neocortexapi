@@ -35,6 +35,7 @@ The output of the KNN Classifier is a list of ClassifierResult objects, sorted i
 The closest match is labeled "A," followed by "B," and so forth.
 
 In summary, the KNN Classifier exemplifies the power of simplicity in machine learning, providing accurate predictions based on the proximity of data points in the feature space.
+k
 */
 
 
