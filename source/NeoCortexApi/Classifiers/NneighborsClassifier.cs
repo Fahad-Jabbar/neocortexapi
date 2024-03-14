@@ -38,7 +38,7 @@ By considering the majority class among these neighbors, the classifier predicts
 Example:
 
 unknown = [1, 3, 4, 7, 12, 14, 15]
-The Verdict:
+
 The output of the KNN Classifier is a list of ClassifierResult objects, sorted in descending order of match closeness. 
 The closest match is labeled "A," followed by "B," and so forth.
 
