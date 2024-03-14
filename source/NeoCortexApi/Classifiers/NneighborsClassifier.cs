@@ -3,13 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NeoCortexApi.Classifiers
-{
-    internal class NneighborsClassifier
-    {
-    }
-}
-
 
 
 /*
@@ -46,32 +39,44 @@ In summary, the KNN Classifier exemplifies the power of simplicity in machine le
 */
 namespace KNN
 {
-    /// <summary>
-    /// KNNProgram represents a K-Nearest Neighbor (KNN) Classifier program.
-    /// It leverages the Neocortex API for seamless integration and offers a straightforward approach to classification.
-    /// </summary>
-public class KNNProgram
+    public class KNNProgram
     {
-        /// <summary>
-        /// Main method to initiate the KNN classification process.
-        /// </summary>
-        /// <param name="args">Command-line arguments.</param>
         public static void Main(string[] args)
-    {
-        Console.WriteLine("Starting the k-NN classification");
-        Console.WriteLine("id, Data 1, Data 2, Class Prediction: ");
-        Console.WriteLine("[id =  0, 0.32, 0.43, class = 0]");
-        Console.WriteLine(" . . . ");
-        Console.WriteLine("[id = 29, 0.71, 0.22, class = 2]");
+        {
+            Console.WriteLine("Starting the k-NN classification");
 
-        double[][] data = GetData(); // Get the dataset
-        double[] item = new double[] { 0.38, 0.42 }; // Test item
-        int k = 6; // Number of nearest neighbors to consider
-        int classes = 3; // Number of classes
+            var sequences = GetData();
+            double[] testItem = new double[] { 1.0, 2.0, 3.0, 12.0 }; // Test item
+            int k = 6; // Number of nearest neighbors to consider
+            int classes = 2; // Number of classes
 
-        Console.WriteLine($"\nNearest (k={k}) to ({item[0]}, {item[1]}):");
-        int predictedClass = Analyze(item, data, k, classes); // Perform k-NN classification
+            Console.WriteLine($"\nSequence to be predicted: {string.Join(", ", testItem)}");
+            string predictedSequence = Analyze(testItem, sequences, k, classes); // Perform k-NN classification
+            Console.WriteLine($"\nPredicted Sequence: {predictedSequence}");
 
-        Console.WriteLine($"\nEnding k-NN\nPredicted Class: {predictedClass}");
-        Console.ReadLine();
-    }
+            Console.ReadLine();
+        }
+
+        public static string Analyze(double[] item, Dictionary<string, List<double>> sequences, int k, int c)
+        {
+            var distances = new Dictionary<string, double>(); // Dictionary to store distances
+            foreach (var sequence in sequences)
+            {
+                double distance = EuclideanDistance(item, sequence.Value.ToArray());
+                distances.Add(sequence.Key, distance);
+            }
+
+            var nearestSequences = distances.OrderBy(x => x.Value).Take(k); // Get the k nearest sequences
+
+            var votes = new Dictionary<string, double>(); // Dictionary to store votes for each sequence
+            foreach (var seq in nearestSequences)
+            {
+                string sequenceName = seq.Key;
+                votes[sequenceName] = 1.0 / seq.Value; // Weighted voting
+            }
+
+            string predictedSequence = votes.OrderByDescending(x => x.Value).First().Key; // Sequence with maximum votes
+            CalculateMetrics(sequences, predictedSequence); // Calculate evaluation metrics
+
+            return predictedSequence; // Return the predicted sequence
+        }
