@@ -50,3 +50,28 @@ namespace KNN
     /// KNNProgram represents a K-Nearest Neighbor (KNN) Classifier program.
     /// It leverages the Neocortex API for seamless integration and offers a straightforward approach to classification.
     /// </summary>
+public class KNNProgram
+    {
+        /// <summary>
+        /// Main method to initiate the KNN classification process.
+        /// </summary>
+        /// <param name="args">Command-line arguments.</param>
+        public static void Main(string[] args)
+    {
+        Console.WriteLine("Starting the k-NN classification");
+        Console.WriteLine("id, Data 1, Data 2, Class Prediction: ");
+        Console.WriteLine("[id =  0, 0.32, 0.43, class = 0]");
+        Console.WriteLine(" . . . ");
+        Console.WriteLine("[id = 29, 0.71, 0.22, class = 2]");
+
+        double[][] data = GetData(); // Get the dataset
+        double[] item = new double[] { 0.38, 0.42 }; // Test item
+        int k = 6; // Number of nearest neighbors to consider
+        int classes = 3; // Number of classes
+
+        Console.WriteLine($"\nNearest (k={k}) to ({item[0]}, {item[1]}):");
+        int predictedClass = Analyze(item, data, k, classes); // Perform k-NN classification
+
+        Console.WriteLine($"\nEnding k-NN\nPredicted Class: {predictedClass}");
+        Console.ReadLine();
+    }
