@@ -80,3 +80,56 @@ namespace KNN
 
             return predictedSequence; // Return the predicted sequence
         }
+
+        static double EuclideanDistance(double[] item, double[] dataPoint)
+        {
+            double sum = 0.0;
+            for (int i = 0; i < item.Length; ++i)
+            {
+                double diff = item[i] - dataPoint[i];
+                sum += diff * diff;
+            }
+            return Math.Sqrt(sum);
+        }
+
+        public static Dictionary<string, List<double>> GetData()
+        {
+            var sequences = new Dictionary<string, List<double>>();
+
+            sequences.Add("S1", new List<double>(new double[] { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0 }));
+            sequences.Add("S2", new List<double>(new double[] { 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0 }));
+
+            return sequences;
+        }
+
+        static void CalculateMetrics(Dictionary<string, List<double>> sequences, string predictedSequence)
+        {
+            int truePositives = 0, falsePositives = 0, falseNegatives = 0;
+            foreach (var sequence in sequences)
+            {
+                string actualSequence = sequence.Key;
+                if (actualSequence == predictedSequence)
+                {
+                    truePositives++; // Increment true positives
+                }
+                else
+                {
+                    falseNegatives++; // Increment false negatives
+                    if (predictedSequence == actualSequence)
+                        falsePositives++; // Increment false positives
+                }
+            }
+
+            double accuracy = (double)truePositives / sequences[predictedSequence].Count; // Calculate accuracy
+            double precision = (truePositives + falsePositives > 0) ? (double)truePositives / (truePositives + falsePositives) : 0; // Calculate precision
+            double recall = (truePositives + falseNegatives > 0) ? (double)truePositives / (truePositives + falseNegatives) : 0; // Calculate recall
+            double f1Score = (precision + recall > 0) ? 2 * (precision * recall) / (precision + recall) : 0; // Calculate F1 score
+
+            Console.WriteLine($"\nAccuracy: {accuracy:F4}");
+            Console.WriteLine($"Precision: {precision:F4}");
+            Console.WriteLine($"Recall: {recall:F4}");
+            Console.WriteLine($"F1 Score: {f1Score:F4}");
+        }
+
+    }
+}
