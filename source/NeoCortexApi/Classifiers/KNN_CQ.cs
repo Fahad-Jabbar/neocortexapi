@@ -1,30 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NeoCortexApi;
-//using NeoCortexApi.SpatialPooler;
-
-/* This KNN Classifier is a prototype to test it on some randomly generated SDRs. Later, we are going to implement this using Neocortex API. 
- Once the model is predicting the desired outcome then we will feed the multisequence data to classify on new sequences.*/
 
 namespace NeoCortexApi.Classifiers
 {
-
+    /// <summary>
     /// Represents a k-Nearest Neighbors (KNN) classifier.
-
+    /// </summary>
     public class KNN_CQ
     {
-
-        static void Main(string[] args)
-        { }
-        private List<double[]> trainingData;
-        private List<int> labels;
-        private int k;
-
+        private List<double[]> trainingData; // Stores the training data points.
+        private List<int> labels; // Stores the labels corresponding to the training data points.
+        private int k; // The number of nearest neighbors to consider for classification.
 
         // Static instance of Random class
         private static Random random = new Random();
 
+        /// <summary>
+        /// Initializes a new instance of the KNN_CQ class with the specified value of k.
+        /// </summary>
+        /// <param name="k">The number of nearest neighbors to consider for classification.</param>
         public KNN_CQ(int k)
         {
             this.k = k;
@@ -32,6 +27,12 @@ namespace NeoCortexApi.Classifiers
             labels = new List<int>();
         }
 
+        /// <summary>
+        /// Generates a random Sparse Distributed Representation (SDR) with the specified dimensions and sparsity.
+        /// </summary>
+        /// <param name="dimensions">The number of dimensions of the SDR.</param>
+        /// <param name="sparsity">The sparsity level of the SDR (proportion of active bits).</param>
+        /// <returns>A randomly generated SDR.</returns>
         public static double[] GenerateRandomSdr(int dimensions, double sparsity)
         {
             var sdr = new double[dimensions];
@@ -45,7 +46,11 @@ namespace NeoCortexApi.Classifiers
             return sdr;
         }
 
+        /// <summary>
         /// Trains the KNN classifier with the provided training data and labels.
+        /// </summary>
+        /// <param name="data">The training data points.</param>
+        /// <param name="targetLabels">The labels corresponding to the training data points.</param>
         public void Train(List<double[]> data, List<int> targetLabels)
         {
             if (data.Count != targetLabels.Count)
@@ -55,7 +60,9 @@ namespace NeoCortexApi.Classifiers
             labels = targetLabels;
         }
 
+        /// <summary>
         /// Calculates the Euclidean distance between two data points.
+        /// </summary>
         private double CalculateDistance(double[] point1, double[] point2)
         {
             if (point1.Length != point2.Length)
@@ -64,7 +71,9 @@ namespace NeoCortexApi.Classifiers
             return Math.Sqrt(point1.Zip(point2, (x, y) => Math.Pow(x - y, 2)).Sum());
         }
 
+        /// <summary>
         /// Predicts the label for a single data point using the trained KNN classifier.
+        /// </summary>
         public int PredictSingleDataPoint(double[] dataPointToClassify)
         {
             if (trainingData.Count == 0)
@@ -81,14 +90,19 @@ namespace NeoCortexApi.Classifiers
                                      .Key;
         }
 
+        /// <summary>
         /// Predicts the label for a newly generated SDR and classifies it.
+        /// </summary>
         public int ClassifyRandomSdr(int dimensions, double sparsity)
         {
             var dataPointToClassify = GenerateRandomSdr(dimensions, sparsity);
             return PredictSingleDataPoint(dataPointToClassify);
         }
 
+        /// <summary>
         /// Sets the value of k, the number of nearest neighbors to consider for classification.
+        /// </summary>
+        /// <param name="k">The number of nearest neighbors to consider for classification.</param>
         public void SetK(int k)
         {
             if (k <= 0)
