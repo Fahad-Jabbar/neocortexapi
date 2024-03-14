@@ -44,3 +44,9 @@ The closest match is labeled "A," followed by "B," and so forth.
 
 In summary, the KNN Classifier exemplifies the power of simplicity in machine learning, providing accurate predictions based on the proximity of data points in the feature space.
 */
+namespace KNN
+{
+    /// <summary>
+    /// KNNProgram represents a K-Nearest Neighbor (KNN) Classifier program.
+    /// It leverages the Neocortex API for seamless integration and offers a straightforward approach to classification.
+    /// </summary>
