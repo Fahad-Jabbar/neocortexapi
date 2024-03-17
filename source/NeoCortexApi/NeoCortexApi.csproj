@@ -25,6 +25,7 @@
 	  <EnableNETAnalyzers>True</EnableNETAnalyzers>
 	  <AnalysisLevel>latest</AnalysisLevel>
 	  <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+	  <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
