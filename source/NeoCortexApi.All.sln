@@ -59,7 +59,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HtmImageEncoder", "ImageEncoder\HtmImageEncoder.csproj", "{18560247-0A1A-4B91-AE90-B8949B9EDDFA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GridCell", "GridCell\GridCell.csproj", "{F2046867-6B12-4D98-9AA7-E5F0009A1300}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeoCortexApiPersistenceSample", "Samples\NeoCortexApiPersistenceSample\NeoCortexApiPersistenceSample.csproj", "{7B07D7B1-7437-4101-9B6D-DF2F0F78E73B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KNN_UTest", "KNN_UTest\KNN_UTest.csproj", "{8E38D2CA-EAD0-4CBC-A158-54D8737E79DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -123,6 +126,10 @@ Global
 		{7B07D7B1-7437-4101-9B6D-DF2F0F78E73B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B07D7B1-7437-4101-9B6D-DF2F0F78E73B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B07D7B1-7437-4101-9B6D-DF2F0F78E73B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E38D2CA-EAD0-4CBC-A158-54D8737E79DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E38D2CA-EAD0-4CBC-A158-54D8737E79DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E38D2CA-EAD0-4CBC-A158-54D8737E79DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E38D2CA-EAD0-4CBC-A158-54D8737E79DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
