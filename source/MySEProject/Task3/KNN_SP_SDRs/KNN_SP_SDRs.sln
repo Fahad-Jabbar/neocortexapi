@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34309.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KNN_SP_SDRs", "KNN_SP_SDRs\KNN_SP_SDRs.csproj", "{E1E1128D-BECF-47CC-B757-E29CDB7912AE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E1E1128D-BECF-47CC-B757-E29CDB7912AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1E1128D-BECF-47CC-B757-E29CDB7912AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1E1128D-BECF-47CC-B757-E29CDB7912AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1E1128D-BECF-47CC-B757-E29CDB7912AE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D829324E-911D-446A-830D-3FC21961D985}
+	EndGlobalSection
+EndGlobal
