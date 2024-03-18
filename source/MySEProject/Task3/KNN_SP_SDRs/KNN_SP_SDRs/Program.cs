@@ -6,9 +6,6 @@ using NeoCortexApiSample;
 using NeoCortexApi;
 using NeoCortexApi.Encoders;
 using System.Diagnostics;
-using System.ComponentModel;
-using System.Security.Cryptography.X509Certificates;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Data;
 
 namespace NeoCortexApiSample
@@ -85,7 +82,11 @@ namespace NeoCortexApiSample
             Console.WriteLine("KNN ended");
             Console.ReadKey();
         }
-
+        /// <summary>
+        /// Loads data from a CSV file.
+        /// </summary>
+        /// <param name="filePath">The path to the CSV file.</param>
+        /// <returns>The list of data points loaded from the CSV file.</returns>
         static List<DataPoint> LoadData(string filePath)
         {
             List<DataPoint> data = new List<DataPoint>();
@@ -114,7 +115,10 @@ namespace NeoCortexApiSample
 
             return data;
         }
-
+        /// <summary>
+        /// Displays sample data points.
+        /// </summary>
+        /// <param name="data">The list of data points to display.</param>
         static void DisplaySampleData(List<DataPoint> data)
         {
             Console.WriteLine("Sample Data Points:");
