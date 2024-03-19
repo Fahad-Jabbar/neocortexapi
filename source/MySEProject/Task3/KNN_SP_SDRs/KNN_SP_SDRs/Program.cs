@@ -128,6 +128,12 @@ namespace NeoCortexApiSample
             }
             Console.WriteLine();
         }
+        /// <summary>
+        /// Splits the data into training and testing sets.
+        /// </summary>
+        /// <param name="data">The list of data points to split.</param>
+        /// <param name="trainRatio">The ratio of data to be used for training.</param>
+        /// <returns>A tuple containing the training and testing sets.</returns>
 
         static (List<DataPoint>, List<DataPoint>) SplitData(List<DataPoint> data, double trainRatio)
         {
@@ -138,6 +144,11 @@ namespace NeoCortexApiSample
 
             return (trainingData, testingData);
         }
+
+        /// <summary>
+        /// Gets the value of k (number of neighbors) from the user.
+        /// </summary>
+        /// <returns>The value of k entered by the user.</returns>
 
         static int GetKFromUser()
         {
@@ -155,6 +166,14 @@ namespace NeoCortexApiSample
                 }
             }
         }
+
+        /// <summary>
+        /// Performs k-fold cross-validation.
+        /// </summary>
+        /// <param name="data">The list of data points.</param>
+        /// <param name="k">The number of neighbors.</param>
+        /// <param name="numFolds">The number of folds for cross-validation.</param>
+        /// <returns>An array of accuracies obtained from each fold.</returns>
 
         static double[] CrossValidate(List<DataPoint> data, int k, int numFolds)
         {
@@ -176,6 +195,13 @@ namespace NeoCortexApiSample
 
             return accuracies;
         }
+        /// <summary>
+        /// Tests the classifier on a given set of test data.
+        /// </summary>
+        /// <param name="knn">The KNN classifier instance.</param>
+        /// <param name="testData">The list of test data points.</param>
+        /// <param name="k">The number of neighbors.</param>
+        /// <returns>The accuracy of the classifier.</returns>
 
         static double TestClassifier(KNNClassifier knn, List<DataPoint> testData, int k)
         {
