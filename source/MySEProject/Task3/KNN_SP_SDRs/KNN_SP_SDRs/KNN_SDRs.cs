@@ -56,6 +56,12 @@ namespace NeoCortexApiSample
             return predictedLabel;
         }
 
+        /// <summary>
+        /// Calculates the Euclidean distance between two data points.
+        /// </summary>
+        /// <param name="point1">The first data point.</param>
+        /// <param name="point2">The second data point.</param>
+        /// <returns>The Euclidean distance between the two data points.</returns>
         private double CalculateDistance(DataPoint point1, DataPoint point2)
         {
             double sumOfSquares = 0;
@@ -69,9 +75,17 @@ namespace NeoCortexApiSample
         }
     }
 
+    
     public class DataPoint
     {
+        /// <summary>
+        /// The features of the data point.
+        /// </summary>
         public double[] Features { get; set; }
+
+        /// <summary>
+        /// The label of the data point.
+        /// </summary>
         public string Label { get; set; }
     }
 
