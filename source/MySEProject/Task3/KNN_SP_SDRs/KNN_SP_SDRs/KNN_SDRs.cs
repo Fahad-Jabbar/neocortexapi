@@ -8,11 +8,21 @@ namespace NeoCortexApiSample
     {
         private List<DataPoint> trainingData;
 
+        /// <summary>
+        /// Initializes a new instance of the KNNClassifier class with the given training data.
+        /// </summary>
+        /// <param name="trainingData">The training data to be used for classification.</param>
         public KNNClassifier(List<DataPoint> trainingData)
         {
             this.trainingData = trainingData;
         }
 
+        /// <summary>
+        /// Predicts the label of the given test data point based on the k nearest neighbors in the training data.
+        /// </summary>
+        /// <param name="testDataPoint">The test data point to be classified.</param>
+        /// <param name="k">The number of nearest neighbors to consider.</param>
+        /// <returns>The predicted label of the test data point.</returns>
         public string Predict(DataPoint testDataPoint, int k)
         {
             List<DistanceLabelPair> distances = new List<DistanceLabelPair>();
