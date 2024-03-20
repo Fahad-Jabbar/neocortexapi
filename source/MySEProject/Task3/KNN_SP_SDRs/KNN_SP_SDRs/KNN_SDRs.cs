@@ -4,15 +4,28 @@ using System.Linq;
 
 namespace NeoCortexApiSample
 {
+    /// <summary>
+    /// Class representing a K-Nearest Neighbors (KNN) classifier.
+    /// </summary>
     public class KNNClassifier
     {
         private List<DataPoint> trainingData;
 
+        /// <summary>
+        /// Constructor for the KNNClassifier class.
+        /// </summary>
+        /// <param name="trainingData">List of data points used for training the classifier.</param>
         public KNNClassifier(List<DataPoint> trainingData)
         {
             this.trainingData = trainingData;
         }
 
+        /// <summary>
+        /// Predicts the class label for a given test data point using KNN algorithm.
+        /// </summary>
+        /// <param name="testDataPoint">Data point for which the class label needs to be predicted.</param>
+        /// <param name="k">Number of nearest neighbors to consider.</param>
+        /// <returns>Predicted class label for the test data point.</returns>
         public string Predict(DataPoint testDataPoint, int k)
         {
             Dictionary<string, int> labelCounts = new Dictionary<string, int>();
@@ -56,6 +69,11 @@ namespace NeoCortexApiSample
             return predictedLabel;
         }
 
+        /// <summary>
+        /// Calculates distances from a test data point to all points in the training data.
+        /// </summary>
+        /// <param name="testDataPoint">Data point for which distances need to be calculated.</param>
+        /// <returns>List of distance-label pairs.</returns>
         public List<DistanceLabelPair> CalculateDistances(DataPoint testDataPoint)
         {
             List<DistanceLabelPair> distances = new List<DistanceLabelPair>();
@@ -70,6 +88,12 @@ namespace NeoCortexApiSample
             return distances;
         }
 
+        // <summary>
+        /// Calculates the Euclidean distance between two data points.
+        /// </summary>
+        /// <param name="point1">First data point.</param>
+        /// <param name="point2">Second data point.</param>
+        /// <returns>Euclidean distance between the two data points.</returns>
         public double CalculateDistance(DataPoint point1, DataPoint point2)
         {
             double sumOfSquares = 0;
@@ -83,12 +107,18 @@ namespace NeoCortexApiSample
         }
     }
 
+    /// <summary>
+    /// Class representing a data point with features and a label.
+    /// </summary>
     public class DataPoint
     {
         public double[] Features { get; set; }
         public string Label { get; set; }
     }
 
+    /// <summary>
+    /// Class representing a pair of distance and corresponding label.
+    /// </summary>
     public class DistanceLabelPair
     {
         public double Distance { get; }
