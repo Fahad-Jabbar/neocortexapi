@@ -6,6 +6,9 @@ using NeoCortexApiSample;
 using NeoCortexApi;
 using NeoCortexApi.Encoders;
 using System.Diagnostics;
+using System.ComponentModel;
+using System.Security.Cryptography.X509Certificates;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Data;
 
 namespace NeoCortexApiSample
@@ -36,6 +39,7 @@ namespace NeoCortexApiSample
             Console.WriteLine("1. Perform k-fold cross-validation");
             Console.WriteLine("2. Test the classifier once");
             Console.Write("Enter your choice (1 or 2): ");
+
             int choice;
             while (!int.TryParse(Console.ReadLine(), out choice) || (choice != 1 && choice != 2))
             {
@@ -56,22 +60,34 @@ namespace NeoCortexApiSample
                 // Test the classifier once
                 Console.WriteLine("Testing the classifier once...");
                 List<DataPoint> trainingData, testingData;
-                (trainingData, testingData) = SplitData(data, 0.8);
+                (trainingData, testingData) = SplitData(data, 0.8); // 80% training data, 20% testing data
                 KNNClassifier knn = new KNNClassifier(trainingData);
 
                 // Test the classifier on testing data
                 double accuracy = TestClassifier(knn, testingData, k);
                 Console.WriteLine($"Accuracy: {accuracy}%");
 
-                // Get the predicted class label for a test instance
-                string predictedClass = knn.Predict(testingData[0], k);
-                Console.WriteLine($"Predicted Class: {predictedClass}");
+                // Add new data point for prediction without class
+                double[] newData = { 901, 936, 946, 953, 957, 961, 973, 981, 991, 997, 1002, 1014, 1017, 1025, 1034, 1047, 1069, 1100, 1111, 1128 };
+                DataPoint newDataPoint = new DataPoint { Features = newData };
+
+                // Predict the class of the new data point
+                string predictedClassForNewData = knn.Predict(newDataPoint, k);
+                Console.WriteLine($"Predicted Class for New Data Point: {predictedClassForNewData}");
+
+                // Display overall distances to both classes for the new data point
+                List<DistanceLabelPair> distances = knn.CalculateDistances(newDataPoint);
+                double distanceToClass0 = distances.Where(d => d.Label == "0").Sum(d => d.Distance);
+                double distanceToClass1 = distances.Where(d => d.Label == "1").Sum(d => d.Distance);
+
+                Console.WriteLine($"Distance to Class 0: {distanceToClass0}");
+                Console.WriteLine($"Distance to Class 1: {distanceToClass1}");
 
                 // Display corresponding sequence based on predicted class label
-                if (sequences.ContainsKey(predictedClass))
+                if (sequences.ContainsKey(predictedClassForNewData))
                 {
                     Console.WriteLine("Corresponding Sequence:");
-                    Console.WriteLine(string.Join(", ", sequences[predictedClass]));
+                    Console.WriteLine(string.Join(", ", sequences[predictedClassForNewData]));
                 }
                 else
                 {
@@ -82,11 +98,10 @@ namespace NeoCortexApiSample
             Console.WriteLine("KNN ended");
             Console.ReadKey();
         }
-        /// <summary>
-        /// Loads data from a CSV file.
-        /// </summary>
-        /// <param name="filePath">The path to the CSV file.</param>
-        /// <returns>The list of data points loaded from the CSV file.</returns>
+
+
+
+
         static List<DataPoint> LoadData(string filePath)
         {
             List<DataPoint> data = new List<DataPoint>();
@@ -115,10 +130,7 @@ namespace NeoCortexApiSample
 
             return data;
         }
-        /// <summary>
-        /// Displays sample data points.
-        /// </summary>
-        /// <param name="data">The list of data points to display.</param>
+
         static void DisplaySampleData(List<DataPoint> data)
         {
             Console.WriteLine("Sample Data Points:");
@@ -128,12 +140,6 @@ namespace NeoCortexApiSample
             }
             Console.WriteLine();
         }
-        /// <summary>
-        /// Splits the data into training and testing sets.
-        /// </summary>
-        /// <param name="data">The list of data points to split.</param>
-        /// <param name="trainRatio">The ratio of data to be used for training.</param>
-        /// <returns>A tuple containing the training and testing sets.</returns>
 
         static (List<DataPoint>, List<DataPoint>) SplitData(List<DataPoint> data, double trainRatio)
         {
@@ -144,11 +150,6 @@ namespace NeoCortexApiSample
 
             return (trainingData, testingData);
         }
-
-        /// <summary>
-        /// Gets the value of k (number of neighbors) from the user.
-        /// </summary>
-        /// <returns>The value of k entered by the user.</returns>
 
         static int GetKFromUser()
         {
@@ -166,14 +167,6 @@ namespace NeoCortexApiSample
                 }
             }
         }
-
-        /// <summary>
-        /// Performs k-fold cross-validation.
-        /// </summary>
-        /// <param name="data">The list of data points.</param>
-        /// <param name="k">The number of neighbors.</param>
-        /// <param name="numFolds">The number of folds for cross-validation.</param>
-        /// <returns>An array of accuracies obtained from each fold.</returns>
 
         static double[] CrossValidate(List<DataPoint> data, int k, int numFolds)
         {
@@ -195,13 +188,6 @@ namespace NeoCortexApiSample
 
             return accuracies;
         }
-        /// <summary>
-        /// Tests the classifier on a given set of test data.
-        /// </summary>
-        /// <param name="knn">The KNN classifier instance.</param>
-        /// <param name="testData">The list of test data points.</param>
-        /// <param name="k">The number of neighbors.</param>
-        /// <returns>The accuracy of the classifier.</returns>
 
         static double TestClassifier(KNNClassifier knn, List<DataPoint> testData, int k)
         {
@@ -218,5 +204,7 @@ namespace NeoCortexApiSample
             double accuracy = (double)correct / testData.Count * 100;
             return accuracy;
         }
+
+
     }
 }
