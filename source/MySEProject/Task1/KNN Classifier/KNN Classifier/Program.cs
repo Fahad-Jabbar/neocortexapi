@@ -30,6 +30,14 @@ namespace KNN
             Console.ReadLine();
         }
 
+        /// <summary>
+        /// Performs k-NN analysis to predict the class of a test data point.
+        /// </summary>
+        /// <param name="item">The test data point.</param>
+        /// <param name="data">The training data.</param>
+        /// <param name="k">The number of nearest neighbors to consider.</param>
+        /// <param name="c">The number of classes.</param>
+        /// <returns>The predicted class of the test data point.</returns>
         public static int Analyze(double[] item, double[][] data, int k, int c)
         {
             // 1. Distances of the given point from all the data sets is computed below.
@@ -86,10 +94,10 @@ namespace KNN
                 Console.WriteLine("[" + i + "]  " +
                 votes[i].ToString("F4"));
 
-            return maxVotesIndex; //
-                                  // Return the predicted class
+            return maxVotesIndex; // Return the predicted class
+                                  
 
-        } // Analyze
+        } 
 
         static double[] MakeWeights(int k, double[] distances)
         {
@@ -106,7 +114,6 @@ namespace KNN
             return result;
         }
 
-
         //Euclidean Distance method is used here below.
         static double DistFunc(double[] item, double[] dataPoint)
         {
@@ -119,11 +126,17 @@ namespace KNN
             return Math.Sqrt(sum);
         }
 
+        /// <summary>
+        /// Generates sample training data.
+        /// </summary>
+        /// <returns>Sample training data.</returns>
         public static double[][] GetData()
-        { //Summary//
-          //Two different parameters are used to define any of the three classes using KNN Classifier.
-          //The Three Classes are 1,2 and 3.
+        { 
+          //Summary//
+          //The Three Classes are 0, 1, 2//
+
             double[][] data = new double[30][];
+
             data[0] = new double[] { 0, 0.32, 0.43, 0 };
             data[1] = new double[] { 1, 0.26, 0.54, 0 };
             data[2] = new double[] { 2, 0.27, 0.6, 0 };
@@ -154,9 +167,11 @@ namespace KNN
             data[27] = new double[] { 27, 0.66, 0.14, 2 };
             data[28] = new double[] { 28, 0.64, 0.24, 2 };
             data[29] = new double[] { 29, 0.71, 0.22, 2 };
+
             return data;
         }
 
+        // Display a vector
         static void ShowVector(double[] v)
         {
             Console.Write("idx = " + v[0].ToString().PadLeft(3) +
