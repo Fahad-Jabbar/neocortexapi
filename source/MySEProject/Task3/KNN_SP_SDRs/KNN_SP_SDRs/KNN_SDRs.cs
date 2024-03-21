@@ -27,7 +27,7 @@ namespace NeoCortexApiSample
             // Calculate distance from testDataPoint to each point in training data
             foreach (var dataPoint in trainingData)
             {
-                double distance = CalculateDistance(testDataPoint, dataPoint);
+                double distance = InternalDistance(testDataPoint, dataPoint);
                 distances.Add(new DistanceLabelPair(distance, dataPoint.Label));
             }
 
@@ -40,7 +40,7 @@ namespace NeoCortexApiSample
         /// <param name="point1">First data point.</param>
         /// <param name="point2">Second data point.</param>
         /// <returns>Euclidean distance between the two data points.</returns>
-        public double CalculateDistance(DataPoint point1, DataPoint point2)
+        public double InternalDistance(DataPoint point1, DataPoint point2)
         {
             double sumOfSquares = 0;
 
@@ -68,7 +68,7 @@ namespace NeoCortexApiSample
             // Calculate distance from testDataPoint to each point in training data
             foreach (var dataPoint in trainingData)
             {
-                double distance = CalculateDistance(testDataPoint, dataPoint);
+                double distance = InternalDistance(testDataPoint, dataPoint);
 
                 // Store distance and label in the map
                 distanceLabelMap[distance] = dataPoint.Label;

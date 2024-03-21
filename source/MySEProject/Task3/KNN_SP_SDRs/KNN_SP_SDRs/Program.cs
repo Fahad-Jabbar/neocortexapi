@@ -33,11 +33,6 @@ namespace NeoCortexApiSample
             // Define value of k
             int k = GetKFromUser();
 
-            // Initialize dictionary to store sequences
-            Dictionary<string, List<double>> sequences = new Dictionary<string, List<double>>();
-            sequences.Add("1", new List<double>(new double[] { 0.0, 1.0, 2.0, 3.0, 4.0, 2.0, 5.0 }));
-            sequences.Add("0", new List<double>(new double[] { 8.0, 1.0, 2.0, 9.0, 10.0, 7.0, 11.0 }));
-
             // Ask the user whether to perform k-fold cross-validation or single test
             Console.WriteLine("Choose an option:");
             Console.WriteLine("1. Perform k-fold cross-validation");
@@ -75,23 +70,36 @@ namespace NeoCortexApiSample
                 double[] newData = { 901, 936, 946, 953, 957, 961, 973, 981, 991, 997, 1002, 1014, 1017, 1025, 1034, 1047, 1069, 1100, 1111, 1128 };
                 DataPoint newDataPoint = new DataPoint { Features = newData };
 
-                // Predict the class of the new data point
-                string predictedClassForNewData = knn.Predict(newDataPoint, k);
-                Console.WriteLine($"Predicted Class for New Data Point: {predictedClassForNewData}");
-
-                // Display overall distances to both classes for the new data point
+                // Display distances from k nearest data points in nearest to farthest order
+                Console.WriteLine("Distances from K Nearest Data Points:");
                 List<DistanceLabelPair> distances = knn.CalculateDistances(newDataPoint);
-                double distanceToClass0 = distances.Where(d => d.Label == "0").Sum(d => d.Distance);
-                double distanceToClass1 = distances.Where(d => d.Label == "1").Sum(d => d.Distance);
+                foreach (var pair in distances.Take(k))
+                {
+                    Console.WriteLine($"  Distance: {pair.Distance,-10:F2} Label: {pair.Label}");
+                }
 
-                Console.WriteLine($"Distance to Class 0: {distanceToClass0}");
-                Console.WriteLine($"Distance to Class 1: {distanceToClass1}");
+                // Calculate sums for both labels among k nearest neighbors
+                int sumLabel0 = distances.Take(k).Count(d => d.Label == "0");
+                int sumLabel1 = distances.Take(k).Count(d => d.Label == "1");
+                Console.WriteLine($"Sum of Numbers for Label 0: {sumLabel0}");
+                Console.WriteLine($"Sum of Numbers for Label 1: {sumLabel1}");
+
+                // Perform majority voting for class
+                var labelCounts = distances.Take(k).GroupBy(x => x.Label).ToDictionary(g => g.Key, g => g.Count());
+                string majorityClass = labelCounts.OrderByDescending(x => x.Value).First().Key;
+                Console.WriteLine($"Majority Voting results in Class: {majorityClass}");
+
+                
 
                 // Display corresponding sequence based on predicted class label
-                if (sequences.ContainsKey(predictedClassForNewData))
+                Dictionary<string, List<double>> sequences = new Dictionary<string, List<double>>();
+                sequences.Add("1", new List<double>(new double[] { 0.0, 1.0, 2.0, 3.0, 4.0, 2.0, 5.0 }));
+                sequences.Add("0", new List<double>(new double[] { 8.0, 1.0, 2.0, 9.0, 10.0, 7.0, 11.0 }));
+
+                if (sequences.ContainsKey(majorityClass))
                 {
                     Console.WriteLine("Corresponding Sequence:");
-                    Console.WriteLine(string.Join(", ", sequences[predictedClassForNewData]));
+                    Console.WriteLine(string.Join(", ", sequences[majorityClass]));
                 }
                 else
                 {
