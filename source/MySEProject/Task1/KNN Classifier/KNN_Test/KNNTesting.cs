@@ -1,19 +1,22 @@
 using NUnit.Framework;
 using KNN;
+using System.ComponentModel.DataAnnotations;
 
 namespace KNN.nUnitTests
 {
     [TestFixture]
     public class KNNTesting
     {
+        // / Test case to validate Analyze method with a valid input, expecting a correct predicted class.
         [Test]
         public void Analyze_ValidInput_ReturnsCorrectPredictedClass1()
         {
             // Arrange
             double[][] data = KNNProgram.GetData();
-            double[] item = new double[] { 0.38, 0.42 };
-            int k = 6;
-            int c = 3;
+            // Test data points
+            double[] item = new double[] { 0.38, 0.42 }; 
+            int k = 6; // Number of nearest neighbors to consider
+            int c = 3; // Number of classes
 
             // Act
             int predictedClass = KNNProgram.Analyze(item, data, k, c);
@@ -38,13 +41,15 @@ namespace KNN.nUnitTests
             Assert.AreEqual(2, predictedClass); // Assuming the default predicted class is 2
         }
 
+       // Test case to validate Analyze method with a valid input, expecting a correct predicted class.
         [Test]
         public void Analyze_ValidInput_ReturnsCorrectPredictedClass3()
         {
             // Arrange
             double[][] data = KNNProgram.GetData();
+            // Test data point
             double[] item = new double[] { 0.50, 0.30 };
-            int k = 6;
+            int k = 6; 
             int c = 3;
 
             // Act
