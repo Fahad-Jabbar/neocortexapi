@@ -20,6 +20,38 @@ namespace NeoCortexApiSample
             this.trainingData = trainingData;
         }
 
+        public List<DistanceLabelPair> CalculateDistances(DataPoint testDataPoint)
+        {
+            List<DistanceLabelPair> distances = new List<DistanceLabelPair>();
+
+            // Calculate distance from testDataPoint to each point in training data
+            foreach (var dataPoint in trainingData)
+            {
+                double distance = CalculateDistance(testDataPoint, dataPoint);
+                distances.Add(new DistanceLabelPair(distance, dataPoint.Label));
+            }
+
+            return distances;
+        }
+
+        // <summary>
+        /// Calculates the Euclidean distance between two data points.
+        /// </summary>
+        /// <param name="point1">First data point.</param>
+        /// <param name="point2">Second data point.</param>
+        /// <returns>Euclidean distance between the two data points.</returns>
+        public double CalculateDistance(DataPoint point1, DataPoint point2)
+        {
+            double sumOfSquares = 0;
+
+            for (int i = 0; i < point1.Features.Length; i++)
+            {
+                sumOfSquares += Math.Pow(point1.Features[i] - point2.Features[i], 2);
+            }
+
+            return Math.Sqrt(sumOfSquares);
+        }
+
         /// <summary>
         /// Predicts the class label for a given test data point using KNN algorithm.
         /// </summary>
@@ -74,37 +106,7 @@ namespace NeoCortexApiSample
         /// </summary>
         /// <param name="testDataPoint">Data point for which distances need to be calculated.</param>
         /// <returns>List of distance-label pairs.</returns>
-        public List<DistanceLabelPair> CalculateDistances(DataPoint testDataPoint)
-        {
-            List<DistanceLabelPair> distances = new List<DistanceLabelPair>();
-
-            // Calculate distance from testDataPoint to each point in training data
-            foreach (var dataPoint in trainingData)
-            {
-                double distance = CalculateDistance(testDataPoint, dataPoint);
-                distances.Add(new DistanceLabelPair(distance, dataPoint.Label));
-            }
-
-            return distances;
-        }
-
-        // <summary>
-        /// Calculates the Euclidean distance between two data points.
-        /// </summary>
-        /// <param name="point1">First data point.</param>
-        /// <param name="point2">Second data point.</param>
-        /// <returns>Euclidean distance between the two data points.</returns>
-        public double CalculateDistance(DataPoint point1, DataPoint point2)
-        {
-            double sumOfSquares = 0;
-
-            for (int i = 0; i < point1.Features.Length; i++)
-            {
-                sumOfSquares += Math.Pow(point1.Features[i] - point2.Features[i], 2);
-            }
-
-            return Math.Sqrt(sumOfSquares);
-        }
+      
     }
 
     /// <summary>
