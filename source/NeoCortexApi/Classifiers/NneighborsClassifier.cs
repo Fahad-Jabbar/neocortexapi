@@ -15,7 +15,7 @@ namespace KNN
         /// <param name="args">Command-line arguments.</param>
         public static void Main(string[] args)
         {
-            Console.WriteLine("Starting the k-NN classification");
+            Console.WriteLine("kNN for sequential classification");
 
             var sequences = GetData();
             double[] testItem = new double[] { 1.0, 2.0, 3.0, 12.0 }; // Test item
@@ -147,8 +147,8 @@ namespace KNN
             double recall = (truePositives + falseNegatives > 0) ? (double)truePositives / (truePositives + falseNegatives) : 0; // Calculate recall
             double f1Score = (precision + recall > 0) ? 2 * (precision * recall) / (precision + recall) : 0; // Calculate F1 score
 
-            Console.WriteLine($"\nAccuracy: {accuracy:F4}");
-            Console.WriteLine($"Precision: {precision:F4}");
+            
+            Console.WriteLine($"\nPrecision: {precision:F4}");
             Console.WriteLine($"Recall: {recall:F4}");
             Console.WriteLine($"F1 Score: {f1Score:F4}");
         }
