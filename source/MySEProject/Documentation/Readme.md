@@ -11,7 +11,7 @@ The project consists of the following main parts:
 - Using Spatial Pooler generated SDRs for KNN classifier.
 
 
-##Implementation of Native KNN Classifier
+## Implementation of Native KNN Classifier
 The Native KNN classifier takes multiple data streams which belongs to three distinct classes based on two feature sets. Then an unknown data point (item)is fed to the classifier and Analyze(New data point, data stream, k value, No. of Classes) method is employed to predict the class to which the new data point belongs.
 
 _**Sample Data**_
@@ -38,13 +38,13 @@ public static double[][] GetData()
 ```
 unclassified data point = { 0.38, 0.42 };
 ```
-_**Path to the Native KNN**_
+**Path to the Native KNN**
 Inside `MySEProject` folder, there is a folder named `Task1`. From there run the `Program.cs` file to run this project.
 Classifier: [Native KNN](https://github.com/Fahad-Jabbar/neocortexapi/blob/KNN_Quest1/source/MySEProject/Task1/KNN%20Classifier/KNN%20Classifier/Program.cs)
 
-_**Testing**_
+**Testing**
 Unit tests are added for the KNN classifier under KNNTesting.cs
-Path to the Unit test:[KNNTesting.cs] (https://github.com/Fahad-Jabbar/neocortexapi/blob/KNN_Quest1/source/MySEProject/Task1/KNN%20Classifier/KNN_Test/KNNTesting.cs)
+Path to the Unit test: [KNNTesting.cs](https://github.com/Fahad-Jabbar/neocortexapi/blob/KNN_Quest1/source/MySEProject/Task1/KNN%20Classifier/KNN_Test/KNNTesting.cs)
 
 ## Implementation of KNN with Neocortex API
 KNN classifier is implemented with Neocortex API, it takes multiple sequence with their respective labels and train the model. Once the model is trained, unknown data sequence can be tested on the model for classification.
@@ -64,16 +64,16 @@ unclassified Sequence = { 1.0, 2.0, 3.0, 7.0, 8.0, 9.0 }
 
 ```
 
-_**Path to the Project**_
+**Path to the Project**
 Inside `sample` folder, there is a folder named ` NeoCortexApiSample`. From there run the `Program.cs` file to run this project.
 Classifier: [NneighborsClassifier.cs](https://github.com/Fahad-Jabbar/neocortexapi/blob/KNN_Quest1/source/NeoCortexApi/Classifiers/NneighborsClassifier.cs)
 
-_**Testing**_
+**Testing**
 Unit tests are implemented for the KNN classifier in the KNN_UTest folder.
-Path to the Unit test:[UnitTest1.cs] (https://github.com/Fahad-Jabbar/neocortexapi/blob/KNN_Quest1/source/KNN_UTest/UnitTest1.cs)
+Path to the Unit test: [UnitTest1.cs](https://github.com/Fahad-Jabbar/neocortexapi/blob/KNN_Quest1/source/KNN_UTest/UnitTest1.cs)
 
 
-**Using SP generated SDRs for KNN Classifier:**
+## Using SP generated SDRs for KNN Classifier
 The KNN classifier integrated with the NeoCortex API for processing spatial pooler generated SDRs (Sparse Distributed Representations)is initiated by loading the csv file which consists of SDR data. During processing, the data is split into training and testing sets. 80% of the data is used for training and 20% is used as testing dataset. Once the model is trained, it can be tested on the testing dataset to classify the data.
 
 The performance of the KNN classifier can also be evaluated through two distinct methods: k-fold cross-validation or a single test. In k-fold cross-validation, the dataset is divided into k equal-sized folds, and the classifier is trained and tested k times, with each fold serving as the testing set once and the remaining data used for training. This process allows for a comprehensive assessment of the classifier's generalization ability by ensuring that each data point is used for both training and testing at different stages. On the other hand, the single test option allows users to assess the classifier's performance on a single split of the dataset, typically divided into training and testing subsets using a the 80% to 20% ratio. This approach provides a quick evaluation of the classifier's accuracy without the computational overhead of k-fold cross-validation, making it suitable for scenarios where efficiency is a priority.
@@ -90,13 +90,13 @@ unclassified Sequence = { 901, 936, 946, 953, 957, 961, 973, 981, 991, 997, 1002
 ```
 The output of this project gives the labeled classification of the testing data.
 
-_**Path to the Project**_
+**Path to the Project**
 Inside `MySEProject` folder, there is a folder named `Task3`. From there run the `Program.cs` file to run this project.
 [program.cs](https://github.com/Fahad-Jabbar/neocortexapi/blob/KNN_Quest1/source/MySEProject/Task3/KNN_SP_SDRs/KNN_SP_SDRs/KNN_SDRs.cs)
 
-_**Testing**_
+**Testing**
 Unit tests are implemented for the KNN classifier in the KNN_UnitTest folder.
-Path to the Unit test:[UnitTest1.cs] (https://github.com/Fahad-Jabbar/neocortexapi/blob/KNN_Quest1/source/MySEProject/Task3/KNN_SP_SDRs/KNN_UnitTest/UnitTest1.cs)
+Path to the Unit test: [UnitTest1.cs](https://github.com/Fahad-Jabbar/neocortexapi/blob/KNN_Quest1/source/MySEProject/Task3/KNN_SP_SDRs/KNN_UnitTest/UnitTest1.cs)
 
 
 
