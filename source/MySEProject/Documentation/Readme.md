@@ -38,11 +38,11 @@ public static double[][] GetData()
 ```
 unclassified data point = { 0.38, 0.42 };
 ```
-**Path to the Native KNN**
+**Path to the Native KNN**: 
 Inside `MySEProject` folder, there is a folder named `Task1`. From there run the `Program.cs` file to run this project.
 Classifier: [Native KNN](https://github.com/Fahad-Jabbar/neocortexapi/blob/KNN_Quest1/source/MySEProject/Task1/KNN%20Classifier/KNN%20Classifier/Program.cs)
 
-**Testing**
+**Testing**: 
 Unit tests are added for the KNN classifier under KNNTesting.cs
 Path to the Unit test: [KNNTesting.cs](https://github.com/Fahad-Jabbar/neocortexapi/blob/KNN_Quest1/source/MySEProject/Task1/KNN%20Classifier/KNN_Test/KNNTesting.cs)
 
@@ -64,11 +64,11 @@ unclassified Sequence = { 1.0, 2.0, 3.0, 7.0, 8.0, 9.0 }
 
 ```
 
-**Path to the Project**
+**Path to the Project**: 
 Inside `sample` folder, there is a folder named ` NeoCortexApiSample`. From there run the `Program.cs` file to run this project.
 Classifier: [NneighborsClassifier.cs](https://github.com/Fahad-Jabbar/neocortexapi/blob/KNN_Quest1/source/NeoCortexApi/Classifiers/NneighborsClassifier.cs)
 
-**Testing**
+**Testing**: 
 Unit tests are implemented for the KNN classifier in the KNN_UTest folder.
 Path to the Unit test: [UnitTest1.cs](https://github.com/Fahad-Jabbar/neocortexapi/blob/KNN_Quest1/source/KNN_UTest/UnitTest1.cs)
 
@@ -90,11 +90,11 @@ unclassified Sequence = { 901, 936, 946, 953, 957, 961, 973, 981, 991, 997, 1002
 ```
 The output of this project gives the labeled classification of the testing data.
 
-**Path to the Project**
+**Path to the Project**: 
 Inside `MySEProject` folder, there is a folder named `Task3`. From there run the `Program.cs` file to run this project.
 [program.cs](https://github.com/Fahad-Jabbar/neocortexapi/blob/KNN_Quest1/source/MySEProject/Task3/KNN_SP_SDRs/KNN_SP_SDRs/KNN_SDRs.cs)
 
-**Testing**
+**Testing**: 
 Unit tests are implemented for the KNN classifier in the KNN_UnitTest folder.
 Path to the Unit test: [UnitTest1.cs](https://github.com/Fahad-Jabbar/neocortexapi/blob/KNN_Quest1/source/MySEProject/Task3/KNN_SP_SDRs/KNN_UnitTest/UnitTest1.cs)
 
