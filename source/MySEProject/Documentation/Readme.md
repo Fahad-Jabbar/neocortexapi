@@ -1,9 +1,15 @@
 Project Title :- Implementation of KNN Classifier 
 # KNN Classifier
-- A K-Nearest Neighbors (KNN) classifier is a type of instance-based learning algorithm used for classification tasks. 
--It's a type of instance-based learning where the algorithm makes predictions based on the majority class of the k-nearest neighbors of a given data point.
-- It classifies a data point based on the majority class of its k-nearest neighbors in the feature space. 
-- The distance metric (Euclidean distance) is used to measure the similarity between data points.
+- K-Nearest Neighbors (KNN) is a classification algorithm that predicts the class label of a new data point by analyzing the labels of its k nearest neighbors in the training data using a distance metric like Euclidean distance.
+- Selecting the optimal number of neighbors (k) is crucial to balance variance and overfitting. 
+- KNN offers a simple and interpretable approach to classification, making it widely used in various applications.
+
+- Combining the K-Nearest Neighbors (KNN) algorithm with the Hierarchical Temporal Memory (HTM) framework can boost the accuracy of classifying temporal data. 
+- By using KNN within HTM, we can better spot patterns and similarities in sequential data, leading to more precise predictions. 
+- This teamwork between KNN and HTM improves how we analyze time series data and enhances the performance of our predictive models. 
+- It's like having two smart tools working together to make sense of complex information in a more effective way.
+
+**This project aims to assess the effectiveness of the K-Nearest Neighbors (KNN) classifier by integrating it with the Neocoretex API.**
 
 The project consists of the following main parts:
 - Implementing the native KNN classifier
