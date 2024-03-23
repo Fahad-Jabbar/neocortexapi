@@ -1,5 +1,5 @@
-Project Title :- Implementation of KNN Classifier 
-# KNN Classifier
+# Implement the KNN Classifier 
+
 K-Nearest Neighbors (KNN) is a classification algorithm that predicts the class label of a new data point by analyzing the labels of its k nearest neighbors in the training data using a distance metric like Euclidean distance. Selecting the optimal number of neighbors (k) is crucial to balance variance and overfitting. KNN offers a simple and interpretable approach to classification, making it widely used in various applications.
 
 Combining the K-Nearest Neighbors (KNN) algorithm with the Hierarchical Temporal Memory (HTM) framework can boost the accuracy of classifying temporal data. By using KNN within HTM, we can better spot patterns and similarities in sequential data, leading to more precise predictions.
@@ -98,8 +98,3 @@ Inside `MySEProject` folder, there is a folder named `Task3`. From there run the
 **Testing**: 
 Unit tests are implemented for the KNN classifier in the KNN_UnitTest folder.
 Path to the Unit test: [UnitTest1.cs](https://github.com/Fahad-Jabbar/neocortexapi/blob/KNN_Quest1/source/MySEProject/Task3/KNN_SP_SDRs/KNN_UnitTest/UnitTest1.cs)
-
-
-
-
-
