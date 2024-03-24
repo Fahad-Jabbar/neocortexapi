@@ -4,7 +4,9 @@ K-Nearest Neighbors (KNN) is a classification algorithm that predicts the class 
 
 Combining the K-Nearest Neighbors (KNN) algorithm with the Hierarchical Temporal Memory (HTM) framework can boost the accuracy of classifying temporal data. By using KNN within HTM, we can better spot patterns and similarities in sequential data, leading to more precise predictions.
 
-**This project aims to assess the effectiveness of the K-Nearest Neighbors (KNN) classifier by integrating it with the Neocoretex API.**
+Hierarchical Temporal Memory (HTM) is a machine learning technology that aims to mimic the cortical algorithm of the neocortex. It comprises two key components: the Spatial Pooler and Temporal Memory. The Spatial Pooler strengthens synapses to recognize objects based on repeated stimuli, while Temporal Memory learns and predicts sequences of Sparse Distributed Representations. This integration enables pattern recognition and accurate predictions in HTM CLA.
+
+This project evaluates the K-Nearest Neighbors (KNN) classifier and implements by integrating it with the Neocortex API.
 
 The project consists of the following main parts:
 - Implementing the native KNN classifier
