@@ -97,12 +97,20 @@ namespace KNN
             return maxVotesIndex; // Return the predicted class
                                   
 
-        } 
+        }
 
+        /// <summary>
+        /// Calculates weights for K-Nearest Neighbors classification using the inverse distance approach.
+        /// </summary>
+        /// <param name="k">Number of neighbors to consider.</param>
+        /// <param name="distances">Distances to the k nearest neighbors.</param>
+        /// <returns>An array of weights, one for each neighbor.</returns>
+        /// 
         static double[] MakeWeights(int k, double[] distances)
         {
             // Inverse technique
             double[] result = new double[k];  // one per neighbor
+            // Calculate sum of inverse distances (for normalization)
             double sum = 0.0;
             for (int i = 0; i < k; ++i)
             {
@@ -114,7 +122,13 @@ namespace KNN
             return result;
         }
 
-        //Euclidean Distance method is used here below.
+
+        /// <summary>
+        /// Calculates the Euclidean distance between two data points.
+        /// </summary>
+        /// <param name="item">The first data point.</param>
+        /// <param name="dataPoint">The second data point.</param>
+        /// <returns>The Euclidean distance between the two data points.</returns>
         static double DistFunc(double[] item, double[] dataPoint)
         {
             double sum = 0.0;
