@@ -21,7 +21,21 @@ namespace NeoCortexApiSample
         /// <param name="args">Command-line arguments.</param>
         static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to KNN Classifier!");
+
+            //
+            // Starts experiment that demonstrates how to learn spatial patterns.
+            //SpatialPatternLearning experiment = new SpatialPatternLearning();
+            //experiment.Run();
+
+            //
+            // Starts experiment that demonstrates how to learn spatial patterns.
+            // SequenceLearning experiment = new SequenceLearning();
+            // experiment.Run();
+
+            RunMultiSimpleSequenceLearningExperiment();
+            RunMultiSequenceLearningExperiment();
+
+            Console.WriteLine("Classification with KNN!");
 
             // Load data from CSV file
             List<DataPoint> data = LoadData("Dataset.csv");
@@ -89,12 +103,12 @@ namespace NeoCortexApiSample
                 string majorityClass = labelCounts.OrderByDescending(x => x.Value).First().Key;
                 Console.WriteLine($"Majority Voting results in Class: {majorityClass}");
 
-                
+
 
                 // Display corresponding sequence based on predicted class label
                 Dictionary<string, List<double>> sequences = new Dictionary<string, List<double>>();
-                sequences.Add("1", new List<double>(new double[] { 0.0, 1.0, 2.0, 3.0, 4.0, 2.0, 5.0 }));
-                sequences.Add("0", new List<double>(new double[] { 8.0, 1.0, 2.0, 9.0, 10.0, 7.0, 11.0 }));
+                sequences.Add("1", new List<double>(new double[] { 0.0, 1.0, 2.0, 3.0, 4.0, 2.0, 5.0, 8.0, 11.0 }));
+                sequences.Add("0", new List<double>(new double[] { 8.0, 1.0, 2.0, 9.0, 10.0, 7.0, 11.0, 15.00, 19.00 }));
 
                 if (sequences.ContainsKey(majorityClass))
                 {
@@ -109,6 +123,43 @@ namespace NeoCortexApiSample
 
             Console.WriteLine("KNN ended");
             Console.ReadKey();
+        }
+        private static void RunMultiSimpleSequenceLearningExperiment()
+        {
+            Dictionary<string, List<double>> sequences = new Dictionary<string, List<double>>();
+
+            sequences.Add("S1", new List<double>(new double[] { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, }));
+            sequences.Add("S2", new List<double>(new double[] { 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0 }));
+
+            //
+            // Prototype for building the prediction engine.
+            MultiSequenceLearning experiment = new MultiSequenceLearning();
+            var predictor = experiment.Run(sequences);
+        }
+
+        private static void RunMultiSequenceLearningExperiment()
+        {
+            Dictionary<string, List<double>> sequences = new Dictionary<string, List<double>>();
+
+            //sequences.Add("S1", new List<double>(new double[] { 0.0, 1.0, 0.0, 2.0, 3.0, 4.0, 5.0, 6.0, 5.0, 4.0, 3.0, 7.0, 1.0, 9.0, 12.0, 11.0, 12.0, 13.0, 14.0, 11.0, 12.0, 14.0, 5.0, 7.0, 6.0, 9.0, 3.0, 4.0, 3.0, 4.0, 3.0, 4.0 }));
+            //sequences.Add("S2", new List<double>(new double[] { 0.8, 2.0, 0.0, 3.0, 3.0, 4.0, 5.0, 6.0, 5.0, 7.0, 2.0, 7.0, 1.0, 9.0, 11.0, 11.0, 10.0, 13.0, 14.0, 11.0, 7.0, 6.0, 5.0, 7.0, 6.0, 5.0, 3.0, 2.0, 3.0, 4.0, 3.0, 4.0 }));
+
+            sequences.Add("S1", new List<double>(new double[] { 0.0, 1.0, 2.0, 3.0, 4.0, 2.0, 5.0, 8.0, 11.0 }));
+            sequences.Add("S2", new List<double>(new double[] { 8.0, 1.0, 2.0, 9.0, 10.0, 7.0, 11.00, 15.00, 19.00 }));
+
+            //
+            // Prototype for building the prediction engine.
+            MultiSequenceLearning experiment = new MultiSequenceLearning();
+            var predictor = experiment.Run(sequences);
+
+            //
+            // These list are used to see how the prediction works.
+            // Predictor is traversing the list element by element. 
+            // By providing more elements to the prediction, the predictor delivers more precise result.
+            var list1 = new double[] { 1.0, 2.0, 3.0, 4.0, 2.0, 5.0 };
+            var list2 = new double[] { 2.0, 3.0, 4.0 };
+            var list3 = new double[] { 8.0, 1.0, 2.0 };
+
         }
 
         /// <summary>
