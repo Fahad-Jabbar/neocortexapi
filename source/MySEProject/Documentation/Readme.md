@@ -69,7 +69,7 @@ unclassified Sequence = { 1.0, 2.0, 3.0, 7.0, 8.0, 9.0 }
 
 **Path to the Project**: 
 Inside `sample` folder, there is a folder named ` NeoCortexApiSample`. From there run the `Program.cs` file to run this project.
-Classifier: [NneighborsClassifier.cs](https://github.com/Fahad-Jabbar/neocortexapi/blob/KNN_Quest1/source/NeoCortexApi/Classifiers/NneighborsClassifier.cs)
+Classifier: [KnnClassifier.cs](https://github.com/Fahad-Jabbar/neocortexapi/blob/KNN_Quest1/source/NeoCortexApi/Classifiers/KnnClassifier.cs)
 
 **Testing**: 
 Unit tests are implemented for the KNN classifier in the KNN_UTest folder.
