@@ -99,7 +99,7 @@ namespace NeoCortexApiSample
                 Console.WriteLine($"Sum of Numbers for Label 0: {sumLabel0}");
                 Console.WriteLine($"Sum of Numbers for Label 1: {sumLabel1}");
 
-                // Perform majority voting for class
+                // Perform majority voting for class 
                 var labelCounts = distances.Take(k).GroupBy(x => x.Label).ToDictionary(g => g.Key, g => g.Count());
                 string majorityClass = labelCounts.OrderByDescending(x => x.Value).First().Key;
                 Console.WriteLine($"Majority Voting results in Class: {majorityClass}");
@@ -249,7 +249,7 @@ namespace NeoCortexApiSample
         }
 
         /// <summary>
-        /// Performs k-fold cross-validation.
+        /// Performs k-fold cross-validation
         /// </summary>
         /// <param name="data">List of data points.</param>
         /// <param name="k">Value of k (number of neighbors).</param>
