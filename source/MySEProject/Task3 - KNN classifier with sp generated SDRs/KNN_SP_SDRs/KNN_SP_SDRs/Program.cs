@@ -70,7 +70,8 @@ namespace NeoCortexApiSample
             }
             else
             {
-                // Test the classifier once
+
+                // Test the classifier once for accuracy
                 Console.WriteLine("Testing the classifier once...");
                 List<DataPoint> trainingData, testingData;
                 (trainingData, testingData) = SplitData(data, 0.8); // 80% training data, 20% testing data
