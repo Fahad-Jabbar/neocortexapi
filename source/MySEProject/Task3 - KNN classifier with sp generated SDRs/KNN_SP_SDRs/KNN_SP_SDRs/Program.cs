@@ -71,13 +71,13 @@ namespace NeoCortexApiSample
             else
             {
 
-                // Test the classifier once for accuracy
+                // Test the classifier once for accuracy 
                 Console.WriteLine("Testing the classifier once...");
                 List<DataPoint> trainingData, testingData;
                 (trainingData, testingData) = SplitData(data, 0.8); // 80% training data, 20% testing data
                 KNNClassifier knn = new KNNClassifier(trainingData);
 
-                // Test the classifier on testing data
+                // Test the classifier on testing dataset
                 double accuracy = TestClassifier(knn, testingData, k);
                 Console.WriteLine($"Accuracy: {accuracy}%");
 
