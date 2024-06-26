@@ -11,7 +11,7 @@ namespace NeoCortexApiSample
     {
         private List<DataPoint> trainingData;
 
-        /// <summary>
+        
         /// Constructor for the KNNClassifier class.
         /// </summary>
         /// <param name="trainingData">List of data points used for training the classifier.</param>
