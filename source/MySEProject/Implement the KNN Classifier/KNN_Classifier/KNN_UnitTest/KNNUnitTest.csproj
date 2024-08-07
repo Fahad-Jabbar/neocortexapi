@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\KNN_SP_SDRs\KNN_SP_SDRs.csproj" />
+    <ProjectReference Include="..\KNN_SP_SDRs\KNNClassifier.csproj" />
   </ItemGroup>
 
 </Project>

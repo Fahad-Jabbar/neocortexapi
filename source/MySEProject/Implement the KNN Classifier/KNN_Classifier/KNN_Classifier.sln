@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KNN_SP_SDRs", "KNN_SP_SDRs\KNN_SP_SDRs.csproj", "{E1E1128D-BECF-47CC-B757-E29CDB7912AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KNNClassifier", "KNN_SP_SDRs\KNNClassifier.csproj", "{E1E1128D-BECF-47CC-B757-E29CDB7912AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KNN_UnitTest", "KNN_UnitTest\KNN_UnitTest.csproj", "{15BEBF0C-95E8-4AE1-907B-A43B6991F6FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KNNUnitTest", "KNN_UnitTest\KNNUnitTest.csproj", "{15BEBF0C-95E8-4AE1-907B-A43B6991F6FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
