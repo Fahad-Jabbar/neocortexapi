@@ -1,32 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using NeoCortexApi.Entities;
-using System.Collections.Generic;
-using NeoCortexApi.Classifiers;
 
-namespace NeoCortexApiSample
+namespace NeoCortexApi.Classifiers;
+
+/// <summary>
+/// Defines a generic interface for a K-nearest neighbors (KNN) classifier that can learn from and predict input values based on HTM cell activations.
+/// </summary>
+/// <typeparam name="TIN">The type of the input data.</typeparam>
+/// <typeparam name="TOUT">The type of the output data (typically the same as TIN in classification tasks).</typeparam>
+public interface IClassifierKnn<TIN, TOUT>
 {
     /// <summary>
-    /// Interface representing a classifier.
+    /// Teaches the classifier a new input-output association. 
     /// </summary>
-    public interface IClassifier
-    {
-        /// <summary>
-        /// Calculates distances from a test data point to all points in the training data.
-        /// </summary>
-        /// <param name="testDataPoint">Data point for which distances need to be calculated.</param>
-        /// <returns>List of distance-label pairs.</returns>
-        List<DistanceLabelPair> CalculateDistances(DataPoint testDataPoint);
+    /// <param name="input">The input value to be learned.</param>
+    /// <param name="output">An array of cells activated by the input.</param>
+    void Learn(TIN input, Cell[] output);
 
-        /// <summary>
-        /// Predicts the class label for a given test data point using the classifier algorithm.
-        /// </summary>
-        /// <param name="testDataPoint">Data point for which the class label needs to be predicted.</param>
-        /// <param name="k">Number of nearest neighbors to consider.</param>
-        /// <returns>Predicted class label for the test data point.</returns>
-        string Predict(DataPoint testDataPoint, int k);
-    }
+    /// <summary>
+    /// Predicts a list of potential input values based on the current state of predictive cells.
+    /// </summary>
+    /// <param name="predictiveCells">An array of cells whose activation patterns are used to predict the next inputs.</param>
+    /// <param name="howMany">Specifies how many top matching inputs to return based on their proximity.</param>
+    /// <returns>A list of predicted inputs along with their classification results.</returns>
+    List<ClassifierResult<TIN>> GetPredictedInputValues(Cell[] predictiveCells, short howMany = 1);
 }

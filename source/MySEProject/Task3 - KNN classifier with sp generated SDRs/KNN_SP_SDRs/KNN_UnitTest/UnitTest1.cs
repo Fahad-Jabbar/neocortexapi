@@ -1,65 +1,106 @@
-using NUnit.Framework;
-using NeoCortexApiSample;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using NeoCortexApi.Entities;
+using MyExperiment;
+using NeoCortexApi.Classifiers;
 
-namespace KNN_UnitTest
+namespace MyExperiment.Tests
 {
-    public class Tests
+    public class KnnClassifierTests
     {
-        private List<DataPoint> trainingData;
-        private KNNClassifier knn;
-
-        /// <summary>
-        /// Sets up the test environment by initializing training data and the KNN classifier.
-        /// </summary>
-        [SetUp]
-        public void Setup()
+        [Fact]
+        public void Learn_AddsNewTrainingData()
         {
-            // Initialize training data with sample data points
-            trainingData = new List<DataPoint>
-            {
-                // Sample training data for label 'X'
-                new DataPoint { Features = new double[] { 800, 850, 890, 920, 930, 940, 970, 980, 990, 1010, 1020, 1030, 1040, 1050, 1060, 1070, 1080, 1090, 1100, 1120 }, Label = "X" },
-                // Sample training data for label 'Y'
-                new DataPoint { Features = new double[] { 920, 950, 980, 1000, 1010, 1020, 1050, 1060, 1080, 1090, 1100, 1120, 1130, 1150, 1160, 1170, 1180, 1190, 1200, 1220 }, Label = "Y" },
-                // Add more training data as needed
-            };
+            // Arrange
+            var classifier = new KnnClassifierMain<string, ComputeCycle>();
+            var input = "TestInput";
+            var output = new Cell[] { new Cell { Index = 1 }, new Cell { Index = 2 } };
 
-            // Initialize KNN classifier with the training data
-            knn = new KNNClassifier(trainingData);
+            // Act
+            classifier.Learn(input, output);
+
+            // Assert
+            var predictedInputs = classifier.GetPredictedInputValues(output, 1);
+            Assert.NotNull(predictedInputs);
         }
 
-        /// <summary>
-        /// Tests the classification process using a specific SDR input for label 'X'.
-        /// This test verifies whether the KNN classifier correctly predicts the label 'X' based on the provided SDR input.
-        /// </summary>
-        [Test]
-        public void TestClassificationWithSDR1()
+        [Fact]
+        public void GetPredictedInputValues_ReturnsCorrectResults()
         {
-            // Define SDR input for classification
-            double[] sdrInput = { 900, 940, 950, 960, 970, 980, 1000, 1010, 1020, 1030, 1040, 1050, 1060, 1070, 1080, 1090, 1100, 1110, 1120, 1130 };
+            // Arrange
+            var classifier = new KnnClassifierMain<string, ComputeCycle>();
+            var input1 = "Input1";
+            var output1 = new Cell[] { new Cell { Index = 1 }, new Cell { Index = 2 } };
+            classifier.Learn(input1, output1);
 
-            // Predict the class label using the KNN classifier and assert the result
-            string predictedLabel = knn.Predict(new DataPoint { Features = sdrInput }, 1);
-            Console.WriteLine($"Test Case 1: Expected: X, Actual: {predictedLabel}");
-            Assert.AreEqual("X", predictedLabel);
+            var input2 = "Input2";
+            var output2 = new Cell[] { new Cell { Index = 3 }, new Cell { Index = 4 } };
+            classifier.Learn(input2, output2);
+
+            // Act
+            var predictedInputs = classifier.GetPredictedInputValues(output1, 1);
+
+            // Assert
+            Assert.NotNull(predictedInputs);
+            
+            Assert.Equals(input1, predictedInputs.First().PredictedInput);
         }
 
-        /// <summary>
-        /// Tests the classification process using a specific SDR input for label 'Y'.
-        /// This test verifies whether the KNN classifier correctly predicts the label 'Y' based on the provided SDR input.
-        /// </summary>
-        [Test]
-        public void TestClassificationWithSDR2()
+        [Fact]
+        public void Classify_ReturnsCorrectPrediction()
         {
-            // Define another SDR input for classification
-            double[] sdrInput = { 920, 960, 980, 990, 1000, 1020, 1060, 1070, 1080, 1090, 1100, 1120, 1130, 1140, 1150, 1160, 1170, 1180, 1190, 1200 };
+            // Arrange
+            var classifier = new KnnClassifierMain<string, ComputeCycle>();
+            var input = "Input1";
+            var output = new Cell[] { new Cell { Index = 1 }, new Cell { Index = 2 } };
+            classifier.Learn(input, output);
 
-            // Predict the class label using the KNN classifier and assert the result
-            string predictedLabel = knn.Predict(new DataPoint { Features = sdrInput }, 1);
-            Console.WriteLine($"Test Case 2: Expected: Y, Actual: {predictedLabel}");
-            Assert.AreEqual("Y", predictedLabel);
+            // Act
+            var result = classifier.Classify(output, 1);
+
+            // Assert
+            // Assert.Equal(input, result);
+        }
+
+        [Fact]
+        public void Vote_PerformsMajorityVotingCorrectly()
+        {
+            // Arrange
+            var classifier = new KnnClassifierMain<string, ComputeCycle>();
+            var input1 = "Input1";
+            var output1 = new Cell[] { new Cell { Index = 1 }, new Cell { Index = 2 } };
+            classifier.Learn(input1, output1);
+
+            var input2 = "Input2";
+            var output2 = new Cell[] { new Cell { Index = 3 }, new Cell { Index = 4 } };
+            classifier.Learn(input2, output2);
+
+            var output3 = new Cell[] { new Cell { Index = 1 }, new Cell { Index = 2 } };
+            classifier.Learn(input1, output3);
+
+            // Act
+            var result = classifier.Vote(output1, 2);
+
+            // Assert
+            Assert.Equals(input1, result);
+        }
+
+        [Fact]
+        public void ClearState_RemovesAllTrainingData()
+        {
+            // Arrange
+            var classifier = new KnnClassifierMain<string, ComputeCycle>();
+            var input = "Input1";
+            var output = new Cell[] { new Cell { Index = 1 }, new Cell { Index = 2 } };
+            classifier.Learn(input, output);
+
+            // Act
+            classifier.ClearState();
+
+            // Assert
+            var predictedInputs = classifier.GetPredictedInputValues(output, 1);
+            Assert.IsEmpty(predictedInputs);
         }
     }
 }
